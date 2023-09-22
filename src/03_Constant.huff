@@ -1,0 +1,8 @@
+#define constant NUM = 0x69
+#define constant STORAGE_SLOT0 = FREE_STORAGE_POINTER()
+
+#define macro MAIN() = takes(0) returns(0) {
+    [NUM]             // [0x69] 
+    [STORAGE_SLOT0]         // [value_slot0_pointer, 0x69]
+    sstore          // []
+}

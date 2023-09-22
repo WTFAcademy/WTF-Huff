@@ -14,6 +14,8 @@
 
 **第02讲：存储**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/02_Storage.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/02_Storage/readme.md) 
 
+**第03讲：常量**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/03_Constant.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/03_Constant/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境

@@ -8,7 +8,7 @@ tags:
   - bytecode
 ---
 
-# WTF Huff极简入门: 1. Hello Huff
+# WTF Huff极简入门: 01. Hello Huff
 
 我最近在重新学Huff，巩固一下细节，也写一个“Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
 
