@@ -10,6 +10,8 @@
 
 ## 教程
 
+**第1讲：Hello Huff**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/SimpleStore.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/01_HelloHuff/readme.md) 
+
 ## 快速上手
 
 ### 配置环境
