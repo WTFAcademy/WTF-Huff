@@ -12,7 +12,7 @@
 
 **第1讲：Hello Huff**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/SimpleStore.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/01_HelloHuff/readme.md) 
 
-## 快速上手
+## 运行模版项目
 
 ### 配置环境
 
@@ -26,6 +26,36 @@
     - 要获取每个工具的最新版本，只需运行`foundryup`。
 - [Huff Compiler](https://docs.huff.sh/get-started/installing/)
     - 如果您可以运行`huffc --version`并获取类似`huffc 0.3.0`的输出，则说明您已正确安装。
+
+### 快速开始
+
+1. 克隆[https://github.com/WTFAcademy/WTF-Huff]或[Huff模版仓库](https://github.com/huff-language/huff-project-template)。
+
+运行：
+
+```
+git clone https://github.com/WTFAcademy/WTF-Huff
+cd WTF-Huff
+```
+
+2. 安装依赖
+
+克隆并进入您的仓库后，您需要安装必要的依赖项。为此，只需运行：
+
+```shell
+forge install
+```
+
+3. 构建 & 测试
+
+要构建并测试您的合约，您可以运行：
+
+```shell
+forge build
+forge test
+```
+
+有关如何使用Foundry的更多信息，请查看[Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge)和[foundry-huff library repository](https://github.com/huff-language/foundry-huff)。
 
 ## 参考
 
