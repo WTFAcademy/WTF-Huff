@@ -27,38 +27,6 @@
 - [Huff Compiler](https://docs.huff.sh/get-started/installing/)
     - 如果您可以运行`huffc --version`并获取类似`huffc 0.3.0`的输出，则说明您已正确安装。
 
-### 快速开始
-
-1. 克隆此仓库或使用模板
-
-在[GitHub](https://github.com/huff-language/huff-project-template)上点击“Use this template”，用此仓库作为初始状态创建一个新的仓库。
-
-或运行：
-
-```
-git clone https://github.com/huff-language/huff-project-template
-cd huff-project-template
-```
-
-2. 安装依赖
-
-克隆并进入您的仓库后，您需要安装必要的依赖项。为此，只需运行：
-
-```shell
-forge install
-```
-
-3. 构建 & 测试
-
-要构建并测试您的合约，您可以运行：
-
-```shell
-forge build
-forge test
-```
-
-有关如何使用Foundry的更多信息，请查看[Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge)和[foundry-huff library repository](https://github.com/huff-language/foundry-huff)。
-
 ## 参考
 
 - [huff-project-template](https://github.com/huff-language/huff-project-template)
