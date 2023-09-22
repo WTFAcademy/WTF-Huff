@@ -59,20 +59,6 @@ forge test
 
 有关如何使用Foundry的更多信息，请查看[Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge)和[foundry-huff library repository](https://github.com/huff-language/foundry-huff)。
 
-## 蓝图
-
-```ml
-lib
-├─ forge-std — https://github.com/foundry-rs/forge-std
-├─ foundry-huff — https://github.com/huff-language/foundry-huff
-scripts
-├─ Deploy.s.sol — 部署脚本
-src
-├─ SimpleStore — Huff中的简单存储合约
-test
-└─ SimpleStore.t — SimpleStore测试
-```
-
 ## 参考
 
 - [huff-project-template](https://github.com/huff-language/huff-project-template)
