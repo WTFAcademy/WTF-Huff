@@ -1,0 +1,14 @@
+// 声明存储槽
+#define constant STORAGE_SLOT0 = FREE_STORAGE_POINTER()
+#define constant STORAGE_SLOT1 = FREE_STORAGE_POINTER()
+
+// 使用存储槽
+#define macro MAIN() = takes(0) returns(0) {
+    0x69             // [0x69] 
+    [STORAGE_SLOT0]         // [value_slot0_pointer, 0x69]
+    sstore          // []
+
+    0x420             // [0x420] 
+    [STORAGE_SLOT1]         // [value_slot1_pointer, 0x420]
+    sstore          // []
+}

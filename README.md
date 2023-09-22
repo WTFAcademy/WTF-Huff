@@ -10,7 +10,9 @@
 
 ## 教程
 
-**第1讲：Hello Huff**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/SimpleStore.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/01_HelloHuff/readme.md) 
+**第01讲：Hello Huff**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/SimpleStore.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/01_HelloHuff/readme.md) 
+
+**第02讲：存储**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/02_Storage.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/02_Storage/readme.md) 
 
 ## 运行模版项目
 

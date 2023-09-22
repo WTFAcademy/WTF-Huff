@@ -1,5 +1,5 @@
 ---
-title: 1. Hello Huff
+title: 01. Hello Huff
 tags:
   - solidity
   - huff
