@@ -1,84 +1,77 @@
-<img align="right" width="150" height="150" top="100" src="./assets/blueprint.png">
+# WTF Huff
 
-# huff-project-template • [![ci](https://github.com/huff-language/huff-project-template/actions/workflows/ci.yaml/badge.svg)](https://github.com/huff-language/huff-project-template/actions/workflows/ci.yaml) ![license](https://img.shields.io/github/license/huff-language/huff-project-template.svg) ![solidity](https://img.shields.io/badge/solidity-^0.8.15-lightgrey)
+我最近在重新学Huff，巩固一下细节，也写一个“WTF Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
 
-Versatile Huff Project Template using Foundry.
+> Huff 是一种低级编程语言，旨在开发在以太坊虚拟机（EVM）上运行的高度优化的智能合约。Huff 并没有隐藏 EVM 的内部工作原理，而是将其编程堆栈暴露给开发人员进行手动操作。
 
+先修课程：
+1. [WTF Solidity](https://github.com/AmazingAng/WTF-Solidity)
+2. [WTF EVM Opcodes](https://github.com/WTFAcademy/WTF-EVM-Opcodes)
 
-## Getting Started
+## 教程
 
-### Requirements
+## 快速上手
 
-The following will need to be installed in order to use this template. Please follow the links and instructions.
+### 配置环境
 
--   [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  
-    -   You'll know you've done it right if you can run `git --version`
--   [Foundry / Foundryup](https://github.com/gakonst/foundry)
-    -   This will install `forge`, `cast`, and `anvil`
-    -   You can test you've installed them right by running `forge --version` and get an output like: `forge 0.2.0 (92f8951 2022-08-06T00:09:32.96582Z)`
-    -   To get the latest of each, just run `foundryup`
--   [Huff Compiler](https://docs.huff.sh/get-started/installing/)
-    -   You'll know you've done it right if you can run `huffc --version` and get an output like: `huffc 0.3.0`
+要使用此模板，您需要安装以下内容。请按照链接和指示操作。
 
-### Quickstart
+- [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  
+    - 如果您可以运行`git --version`，则说明您已正确安装。
+- [Foundry / Foundryup](https://github.com/gakonst/foundry)
+    - 这将会安装`forge`，`cast`和`anvil`
+    - 通过运行`forge --version`并获取类似`forge 0.2.0 (92f8951 2022-08-06T00:09:32.96582Z)`的输出，您可以检测是否已正确安装。
+    - 要获取每个工具的最新版本，只需运行`foundryup`。
+- [Huff Compiler](https://docs.huff.sh/get-started/installing/)
+    - 如果您可以运行`huffc --version`并获取类似`huffc 0.3.0`的输出，则说明您已正确安装。
 
-1. Clone this repo or use template
+### 快速开始
 
-Click "Use this template" on [GitHub](https://github.com/huff-language/huff-project-template) to create a new repository with this repo as the initial state.
+1. 克隆此仓库或使用模板
 
-Or run:
+在[GitHub](https://github.com/huff-language/huff-project-template)上点击“Use this template”，用此仓库作为初始状态创建一个新的仓库。
+
+或运行：
 
 ```
 git clone https://github.com/huff-language/huff-project-template
 cd huff-project-template
 ```
 
-2. Install dependencies
+2. 安装依赖
 
-Once you've cloned and entered into your repository, you need to install the necessary dependencies. In order to do so, simply run:
+克隆并进入您的仓库后，您需要安装必要的依赖项。为此，只需运行：
 
 ```shell
 forge install
 ```
 
-3. Build & Test
+3. 构建 & 测试
 
-To build and test your contracts, you can run:
+要构建并测试您的合约，您可以运行：
 
 ```shell
 forge build
 forge test
 ```
 
-For more information on how to use Foundry, check out the [Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge) and the [foundry-huff library repository](https://github.com/huff-language/foundry-huff).
+有关如何使用Foundry的更多信息，请查看[Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge)和[foundry-huff library repository](https://github.com/huff-language/foundry-huff)。
 
-
-## Blueprint
+## 蓝图
 
 ```ml
 lib
 ├─ forge-std — https://github.com/foundry-rs/forge-std
 ├─ foundry-huff — https://github.com/huff-language/foundry-huff
 scripts
-├─ Deploy.s.sol — Deployment Script
+├─ Deploy.s.sol — 部署脚本
 src
-├─ SimpleStore — A Simple Storage Contract in Huff
+├─ SimpleStore — Huff中的简单存储合约
 test
-└─ SimpleStore.t — SimpleStoreTests
+└─ SimpleStore.t — SimpleStore测试
 ```
 
+## 参考
 
-## License
-
-[The Unlicense](https://github.com/huff-language/huff-project-template/blob/master/LICENSE)
-
-
-## Acknowledgements
-
-- [forge-template](https://github.com/foundry-rs/forge-template)
-- [femplate](https://github.com/abigger87/femplate)
-
-
-## Disclaimer
-
-_These smart contracts are being provided as is. No guarantee, representation or warranty is being made, express or implied, as to the safety or correctness of the user interface or the smart contracts. They have not been audited and as such there can be no assurance they will work as intended, and users may experience delays, failures, errors, omissions, loss of transmitted information or loss of funds. The creators are not liable for any of the foregoing. Users should proceed with caution and use at their own risk._
+- [huff-project-template](https://github.com/huff-language/huff-project-template)
+- [huff-doc](https://docs.huff.sh/)
