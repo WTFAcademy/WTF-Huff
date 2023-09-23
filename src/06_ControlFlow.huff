@@ -1,0 +1,43 @@
+#define macro MAIN() = takes (0) returns (0) {
+    // 从 calldata 读取值
+    0x00 calldataload        // [calldata @ 0x00]
+    0x00 eq
+    jump_one jumpi
+
+    // 如果到达此点，则revert
+    0x00 0x00 revert
+
+    // 跳转标签1
+    jump_one:
+        jump_two jump
+        // 如果到达此点，则revert
+        0x00 0x00 revert
+
+    // 跳转标签2
+    jump_two:
+        0x00 0x00 return
+}
+
+/*
+| pc   | op     | opcode         | stack              |
+|------|--------|----------------|--------------------|
+| [00] | 5f     | PUSH0          | 0x00               |
+| [01] | 35     | CALLDATALOAD   | calldata           |
+| [02] | 5f     | PUSH0          | 0x00 calldata      |
+| [03] | 14     | EQ             | suc                |
+| [04] | 61 000b| PUSH2 0x000b   | 0x000b suc         |
+| [07] | 57     | JUMPI          |                    |
+| [08] | 5f     | PUSH0          | 0x00               |
+| [09] | 5f     | PUSH0          | 0x00 0x00          |
+| [0a] | fd     | REVERT         |                    |
+| [0b] | 5b     | JUMPDEST       |                    |
+| [0c] | 61 0013| PUSH2 0x0013   | 0x0013             |
+| [0e] | 56     | JUMP           |                    |
+| [10] | 5f     | PUSH0          | 0x00               |
+| [11] | 5f     | PUSH0          | 0x00 0x00          |
+| [12] | fd     | REVERT         |                    |
+| [13] | 5b     | JUMPDEST       |                    |
+| [14] | 5f     | PUSH0          | 0x00               |
+| [15] | 5f     | PUSH0          | 0x00 0x00          |
+| [16] | f3     | RETURN         |                    |
+*/

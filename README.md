@@ -20,6 +20,8 @@
 
 **第05讲：Main宏**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/05_Main.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/05_Main/readme.md) 
 
+**第06讲：控制流**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/06_ControlFlow.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/06_ControlFlow/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境

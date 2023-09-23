@@ -1,7 +1,6 @@
 ---
 title: 01. Hello Huff
 tags:
-  - solidity
   - huff
   - template
   - evm

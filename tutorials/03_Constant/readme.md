@@ -1,7 +1,6 @@
 ---
 title: 03. 常量
 tags:
-  - solidity
   - huff
   - storage
   - FREE_STORAGE_POINTER

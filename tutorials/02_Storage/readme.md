@@ -1,7 +1,6 @@
 ---
 title: 02. 存储
 tags:
-  - solidity
   - huff
   - storage
   - FREE_STORAGE_POINTER

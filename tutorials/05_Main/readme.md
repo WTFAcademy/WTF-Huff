@@ -1,7 +1,6 @@
 ---
 title: 05. Main宏
 tags:
-  - solidity
   - huff
   - macro
   - main macro

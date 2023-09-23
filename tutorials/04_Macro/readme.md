@@ -1,7 +1,6 @@
 ---
 title: 04. 宏
 tags:
-  - solidity
   - huff
   - macro
   - bytecode
