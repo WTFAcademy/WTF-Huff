@@ -1,0 +1,20 @@
+#define constant STORAGE_SLOT0 = FREE_STORAGE_POINTER()
+
+// this macro takes one argument <value> and save it to STORAGE_SLOT0
+#define macro SAVE(value) = takes(0) returns(0) {
+    <value>                 // [value]
+    [STORAGE_SLOT0]         // [value_slot0_pointer, value]
+    sstore          // []
+}
+
+#define macro MAIN() = takes(0) returns(0) {
+    SAVE(0x420)          // []
+}
+
+/*
+| pc   | op     | opcode         | stack              |
+|------|--------|----------------|--------------------|
+| [00] | 61 0420| PUSH2 0x0420   | 0x0420            |
+| [03] | 5f     | PUSH0          | 0 0x0420           | 
+| [04] | 55     | SSTORE         |                    |
+*/

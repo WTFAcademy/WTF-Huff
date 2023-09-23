@@ -41,7 +41,7 @@ EVM的存储使用键值对存储数据，存储槽是其中的键。在Huff中�
 
 ## 使用存储槽
 
-我们可以通过将存储槽括在方括号中来在代码中引用该槽 - 就像这样`[STORAGE_SLOT0]`。在下面的代码中，我们在`MAIN()`函数中将`0x69`存入`STORAGE_SLOT0`，然后将`0x420`存入`STORAGE_SLOT1`。
+我们可以通过将存储槽括在方括号中来在代码中引用该槽 - 就像这样`[STORAGE_SLOT0]`。在下面的代码中，我们在`MAIN()`宏中将`0x69`存入`STORAGE_SLOT0`，然后将`0x420`存入`STORAGE_SLOT1`。
 
 ```c
 #define macro MAIN() = takes(0) returns(0) {

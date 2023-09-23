@@ -16,6 +16,8 @@
 
 **第03讲：常量**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/03_Constant.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/03_Constant/readme.md) 
 
+**第04讲：宏**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/04_Macro.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/04_Macro/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境

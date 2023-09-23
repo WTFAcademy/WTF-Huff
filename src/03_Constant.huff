@@ -6,3 +6,11 @@
     [STORAGE_SLOT0]         // [value_slot0_pointer, 0x69]
     sstore          // []
 }
+
+/*
+| pc   | op     | opcode         | stack              |
+|------|--------|----------------|--------------------|
+| [00] | 60 69  | PUSH1 0x69     | 0x69               |
+| [02] | 5f     | PUSH0          | 0 0x69             | 
+| [03] | 55     | SSTORE         |                    |
+*/

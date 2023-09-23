@@ -102,7 +102,7 @@ tags:
 
 1. `SET_VALUE()`: 改变`VALUE_LOCATION`存储的值。它先使用`calldataload`从calldata中读取变量的新值，然后使用`sstore`将新值存储到`VALUE_LOCATION`。
 2. `GET_VALUE()`: 读取`VALUE_LOCATION`存储的值。它利用`sload`将`VALUE_LOCATION`存储的值推入堆栈，然后利用`mstore`将值存到内存，最后使用`return`返回。
-3. `MAIN()`: 主函数，定义了合约的主要入口点。当对合约进行外部调用时，会运行这段代码来确定应该调用哪个函数。他先用`0x00 calldataload 0xE0 shr`读取calldata中的函数选择器，然后查看它是否与`SET_VALUE()`或`GET_VALUE()`匹配。如果匹配，就调用相应的函数；否则，回滚交易。
+3. `MAIN()`: 主宏，定义了合约的主入口。当对合约进行外部调用时，会运行这段代码来确定应该调用哪个函数。他先用`0x00 calldataload 0xE0 shr`读取calldata中的函数选择器，然后查看它是否与`SET_VALUE()`或`GET_VALUE()`匹配。如果匹配，就调用相应的函数；否则，回滚交易。
 
 ```c
 /* 方法 */
