@@ -3,8 +3,7 @@ title: 04. 宏
 tags:
   - solidity
   - huff
-  - storage
-  - FREE_STORAGE_POINTER
+  - macro
   - bytecode
 ---
 
@@ -38,6 +37,8 @@ Huff中有两种可以将字节码组合起来的方法，一种叫宏`Macros`�
 - `arguments`: 宏的参数，可以没有。
 - `takes (1)`: 指定宏/函数接受的堆栈输入数量，可以没有，默认为`0`。
 - `returns (3)`: 指定宏/函数输出的堆栈元素数量，可以没有，默认为`0`。
+
+> 比较奇怪的是，当前的huff编译器并不会检查`takes`和`returns`的数量，所以当前它们只是个摆设。未来版本可能会加上检查？
 
 在下面的例子中，`SAVE()`宏接受一个参数`value`，然后将它的值存储在存储槽`STORAGE_SLOT0`。在宏中，我们使用`<value>`来使用参数的值。
 
@@ -82,4 +83,4 @@ huffc src/04_Macro.huff -r
 
 ## 总结
 
-这一讲，我们介绍了Huff中的宏和`macro`关键字。Huff中的宏和函数很相似，但是开发者大多数时间应该使用宏。
+这一讲，我们介绍了Huff中的宏和`macro`关键字。Huff中的宏和函数很相似，但是开发者大多数时间应该使用宏，而不是函数。

@@ -18,6 +18,8 @@
 
 **第04讲：宏**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/04_Macro.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/04_Macro/readme.md) 
 
+**第05讲：Main宏**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/05_Main.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/05_Main/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境

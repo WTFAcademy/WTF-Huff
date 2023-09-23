@@ -1,0 +1,25 @@
+#define constant STORAGE_SLOT0 = FREE_STORAGE_POINTER()
+
+#define macro PUSH_69() = takes(0) returns(1) {
+    push1 0x69                 // [0x69]
+}
+
+#define macro SAVE() = takes(1) returns(0) {
+    // [0x69]
+    [STORAGE_SLOT0]         // [value_slot0_pointer, 0x69]
+    sstore          // []
+
+}
+
+#define macro MAIN() = takes(0) returns(0) {
+    PUSH_69()          // []
+    SAVE()
+}
+
+/*
+| pc   | op     | opcode         | stack              |
+|------|--------|----------------|--------------------|
+| [00] | 60 69  | PUSH2 0x69     | 0x69               |
+| [02] | 5f     | PUSH0          | 0 0x69             | 
+| [03] | 55     | SSTORE         |                    |
+*/
