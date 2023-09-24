@@ -88,4 +88,4 @@ huffc src/10_Constructor.huff -b
 
 ## 总结
 
-这一讲，我们介绍了如何在Huff中使用`Constructor`宏初始智能合约，它与Solidity中的构造函数类似，可以在部署时用来初始化合约。
+这一讲，我们介绍了如何在Huff中使用`Constructor`宏，它与Solidity中的构造函数类似，可以在部署时用来初始化合约。
