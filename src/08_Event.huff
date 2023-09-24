@@ -16,6 +16,7 @@
     __EVENT_HASH(WordAdded) // [sig, value]
     push0 push0         // [0, 0, sig, value]
     log2
+    stop
 }
 
 #define macro GET_VALUE() = takes (0) returns (0) {

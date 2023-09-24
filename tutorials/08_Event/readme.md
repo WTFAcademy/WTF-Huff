@@ -81,7 +81,7 @@ huffc src/08_Events.huff -r
 打印出的bytecode为：
 
 ```
-5f3560e01c8063552410771461001e5780632096525514610049575f5ffd5b600435805f557fd9ce50fb8c432a73c4ed7e62e6128c95e62f29d3ee56042781a0368f192ccdb45f5fa25b5f545f5260205ff3
+5f3560e01c8063552410771461001e578063209652551461004a575f5ffd5b600435805f557fd9ce50fb8c432a73c4ed7e62e6128c95e62f29d3ee56042781a0368f192ccdb45f5fa2005b5f545f5260205ff3
 ```
 
 转换成格式化的表格（后半部分在`stack`中省略了一个用不上的`selector`）：
@@ -119,17 +119,18 @@ huffc src/08_Events.huff -r
 | [29] | 7f d9ce50. | PUSH32 0xd9ce50..        | 0xd9ce50.. calldata@0x04       |
 | [46] | 5f         | PUSH0                    | 0x00 0xd9ce50 calldata@0x04    |
 | [47] | 5f         | PUSH0                    | 0x00 0x00 0xd9ce50 calldata@0x04 |
-| [48] | 5f         | LOG2                     |                                |
-| [49] | 5b         | JUMPDEST                 |                                |
-| [4a] | 5f         | PUSH0                    | 0x00                           |
-| [4b] | 54         | SLOAD                    | value                          |
-| [4c] | 5f         | PUSH0                    | 0x00 value                     |
-| [4d] | 52         | MSTORE                   |                                |
-| [4e] | 60 20      | PUSH1 0x20               | 0x20                           |
-| [50] | 5f         | PUSH0                    | 0x00 0x20                      |
-| [51] | f3         | RETURN                   |                                |
+| [48] | a2         | LOG2                     |                                |
+| [49] | 00         | STOP                     |                                |
+| [4a] | 5b         | JUMPDEST                 |                                |
+| [4b] | 5f         | PUSH0                    | 0x00                           |
+| [4c] | 54         | SLOAD                    | value                          |
+| [4d] | 5f         | PUSH0                    | 0x00 value                     |
+| [4e] | 52         | MSTORE                   |                                |
+| [4f] | 60 20      | PUSH1 0x20               | 0x20                           |
+| [51] | 5f         | PUSH0                    | 0x00 0x20                      |
+| [52] | f3         | RETURN                   |                                |
 
-其中，`[22]-[48]`是`SET_VALUE()`方法的字节码。我们可以看到，这段代码在准备好堆栈`[0x00 0x00 0xd9ce50 calldata@0x04]`之后，使用`log2`释放事件。
+其中，`[22]-[49]`是`SET_VALUE()`方法的字节码。我们可以看到，这段代码在准备好堆栈`[0x00 0x00 0xd9ce50 calldata@0x04]`之后，使用`log2`释放事件。
 
 ## 总结
 

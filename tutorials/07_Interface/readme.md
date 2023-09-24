@@ -128,7 +128,7 @@ huffc src/07_Interface.huff -r
 打印出的bytecode为：
 
 ```
-5f3560e01c8063a3614a8c1461001e5780632096525514610024575f5ffd5b6004355f555b5f545f5260205ff3
+5f3560e01c8063552410771461001e5780632096525514610025575f5ffd5b6004355f55005b5f545f5260205ff3
 ```
 
 转换成格式化的表格：
@@ -157,14 +157,15 @@ huffc src/07_Interface.huff -r
 | [1f] | 35     | CALLDATALOAD   | calldata@0x04 selector           |
 | [20] | 5f     | PUSH0          | 0x00 calldata@0x04 selector     |
 | [21] | 55     | SSTORE         | selector                |
-| [22] | 5b     | JUMPDEST       | selector                   |
-| [23] | 5f     | PUSH0          | 0x00 selector              |
-| [24] | 54     | SLOAD          | value selector             |
-| [25] | 5f     | PUSH0          | 0x00 value selector        |
-| [26] | 52     | MSTORE         | selector                   |
-| [27] | 60 20  | PUSH1 0x20     | 0x20 selector               |
-| [29] | 5f     | PUSH0          | 0x00 0x20 selector         |
-| [2a] | f3     | RETURN         | selector                  |
+| [22] | 00     | STOP           | selector                |
+| [23] | 5b     | JUMPDEST       | selector                   |
+| [24] | 5f     | PUSH0          | 0x00 selector              |
+| [25] | 54     | SLOAD          | value selector             |
+| [26] | 5f     | PUSH0          | 0x00 value selector        |
+| [27] | 52     | MSTORE         | selector                   |
+| [28] | 60 20  | PUSH1 0x20     | 0x20 selector               |
+| [2a] | 5f     | PUSH0          | 0x00 0x20 selector         |
+| [2b] | f3     | RETURN         | selector                  |
 
 我们可以看到，这段字节码的功能：
 
