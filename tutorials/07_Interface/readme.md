@@ -31,7 +31,7 @@ tags:
 
 Huff接口的例子：
 
-```
+```c
 #define function testFunction(uint256, bytes32) view returns (bytes memory)
 
 #define event TestEvent(address indexed, uint256)
@@ -102,7 +102,7 @@ Huff接口的例子：
 
 ## 输出Solidity接口/ABI
 
-我们可以使用`huffc -i`命令将Huff合约的接口转为Solidity合约接口/ABI:
+我们可以使用`huffc -g`命令将Huff合约的接口转为Solidity合约接口/ABI:
 
 ```shell
 huffc src/07_Interface.huff -g

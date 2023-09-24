@@ -1,0 +1,46 @@
+/* 接口 */
+#define function setValue(uint256) nonpayable returns ()
+#define function getValue() view returns (uint256)
+#define event ValueChanged(uint256 indexed)
+
+/* 存储槽位 */
+#define constant VALUE_LOCATION = FREE_STORAGE_POINTER()
+
+/* 方法 */
+#define macro SET_VALUE() = takes (0) returns (0) {
+    0x04 calldataload   // [value]
+    dup1                // [value, value]
+    [VALUE_LOCATION]    // [ptr, value, value]
+    sstore              // [value]
+    // 释放事件
+    __EVENT_HASH(WordAdded) // [sig, value]
+    push0 push0         // [0, 0, sig, value]
+    log2
+}
+
+#define macro GET_VALUE() = takes (0) returns (0) {
+    // 从存储中加载值
+    [VALUE_LOCATION]   // [ptr]
+    sload                // [value]
+
+    // 将值存入内存
+    0x00 mstore
+
+    // 返回值
+    0x20 0x00 return
+}
+
+// 合约的主入口，判断调用的是哪个函数
+#define macro MAIN() = takes (0) returns (0) {
+    // 通过selector判断要调用哪个函数
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(setValue) eq set jumpi
+    dup1 __FUNC_SIG(getValue) eq get jumpi
+    // 如果没有匹配的函数，就revert
+    0x00 0x00 revert
+
+    set:
+        SET_VALUE()
+    get:
+        GET_VALUE()
+}
