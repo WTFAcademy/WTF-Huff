@@ -1,0 +1,26 @@
+/* 接口 */
+#define function getError() view returns (uint256)
+#define error CustomError(uint256)
+
+/* 方法 */
+#define macro GET_ERROR() = takes (0) returns (0) {
+    0x69                // [0x69] 
+    __ERROR(CustomError)   // [error_selector, 0x69]
+    // 将error_selector存入内存，起始位置0x00，结束位置0x03
+    0x00 mstore           // [0x69]
+    // 将0x69存入内存，起始位置0x04，结束位置0x23
+    0x04 mstore           // []
+    0x24 0x00 revert
+}
+
+// 合约的主入口，判断调用的是哪个函数
+#define macro MAIN() = takes (0) returns (0) {
+    // 通过selector判断要调用哪个函数
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(GET_ERROR) eq get_error jumpi
+    // 如果没有匹配的函数，就revert
+    0x00 0x00 revert
+
+    get_error:
+        GET_ERROR()
+}

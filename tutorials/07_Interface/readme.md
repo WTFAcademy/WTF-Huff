@@ -22,9 +22,9 @@ tags:
 
 ## 接口
 
-类似Solidity，你可以在Huff合约的接口中定义函数`functions`和事件`events`。接口主要有两个作用：
+类似Solidity，你可以在Huff合约的接口中定义函数`functions`，事件`events`，和错误`errors`。接口主要有两个作用：
 
-1. 定义接口后，函数名可以用作内置函数`__FUNC_SIG`（获取函数选择器）和`__EVENT_HASH`（事件选择器）的参数
+1. 定义接口后，函数名可以用作内置函数`__FUNC_SIG`（获取函数选择器），`__EVENT_HASH`（事件选择器），和`__ERROR`（错误选择器）的参数
 2. 生成 Solidity 接口/合约 ABI。
 
 接口中的函数可以是`view`、`pure`、`payable`或`nonpayable`类型。并且，只有外部可见的函数需要在接口中定义，内部函数不需要。接口中的事件可以包含索引值（使用`indexed`关键字）和非索引值。

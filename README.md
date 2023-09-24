@@ -26,6 +26,8 @@
 
 **第08讲：事件**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/08_Event.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/08_Event/readme.md) 
 
+**第09讲：错误**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/09_Error.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/09_Error/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境
