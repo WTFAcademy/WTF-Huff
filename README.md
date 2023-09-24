@@ -16,17 +16,19 @@
 
 **第03讲：常量**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/03_Constant.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/03_Constant/readme.md) 
 
-**第04讲：宏**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/04_Macro.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/04_Macro/readme.md) 
+**第04讲：宏 Macro**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/04_Macro.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/04_Macro/readme.md) 
 
 **第05讲：Main宏**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/05_Main.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/05_Main/readme.md) 
 
 **第06讲：控制流**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/06_ControlFlow.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/06_ControlFlow/readme.md) 
 
-**第07讲：接口**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/07_Interface.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/07_Interface/readme.md) 
+**第07讲：接口 Interface**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/07_Interface.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/07_Interface/readme.md) 
 
-**第08讲：事件**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/08_Event.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/08_Event/readme.md) 
+**第08讲：Event**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/08_Event.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/08_Event/readme.md) 
 
-**第09讲：错误**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/09_Error.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/09_Error/readme.md) 
+**第09讲：Error**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/09_Error.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/09_Error/readme.md) 
+
+**第10讲：Constructor**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/10_Constructor.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/10_Constructor/readme.md) 
 
 ## 运行模版项目
 
