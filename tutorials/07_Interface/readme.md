@@ -47,6 +47,8 @@ Huff接口的例子：
 
 - `GET_VALUE()`: 先使用`sload`读取存储槽`VALUE_LOCATION`的值，使用`mstore`将值存入内存，再使用`return`返回。
 
+> 注意，一定要确保每个方法被正确的结束，代码以`return`，`revert`，`stop`，`invalid`指令结尾，不然可能会有漏洞。
+
 ```c
 /* 接口 */
 #define function setValue(uint256) nonpayable returns ()
@@ -60,6 +62,7 @@ Huff接口的例子：
     0x04 calldataload   // [value]
     [VALUE_LOCATION]    // [ptr, value]
     sstore              // []
+    stop                // []
 }
 
 #define macro GET_VALUE() = takes (0) returns (0) {

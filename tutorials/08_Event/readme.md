@@ -48,7 +48,8 @@ EVM中的`LOG`指令用于创建这些日志。指令`LOG0`到`LOG4`的区别在
     // 释放事件
     __EVENT_HASH(ValueChanged) // [sig, value]
     push0 push0         // [0, 0, sig, value]
-    log2
+    log2                // []
+    stop                // []
 }
 ```
 

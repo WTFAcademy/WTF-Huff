@@ -50,6 +50,7 @@ tags:
     0x04 calldataload   // [value]
     [VALUE_LOCATION]    // [ptr, value]
     sstore              // []
+    stop                // []
 }
 
 #define macro GET_VALUE() = takes (0) returns (0) {
@@ -109,6 +110,7 @@ tags:
     0x04 calldataload   // [value]
     [VALUE_LOCATION]    // [ptr, value]
     sstore              // []
+    stop                // []
 }
 
 #define macro GET_VALUE() = takes (0) returns (0) {
@@ -195,7 +197,7 @@ huffc src/SimpleStore.huff -b
 控制台输会输出合约的字节码（creation code）:
 
 ```
-602d8060093d393df35f3560e01c8063552410771461001e5780632096525514610024575f5ffd5b6004355f555b5f545f5260205ff3
+602e8060093d393df35f3560e01c8063552410771461001e5780632096525514610025575f5ffd5b6004355f55005b5f545f5260205ff3
 ```
 
 如果想获取runtime code，可以使用`huffc -r`。
