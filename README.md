@@ -22,6 +22,8 @@
 
 **第06讲：控制流**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/06_ControlFlow.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/06_ControlFlow/readme.md) 
 
+**第07讲：接口**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/07_Interface.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/07_Interface/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境
