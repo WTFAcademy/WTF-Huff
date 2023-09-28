@@ -1,0 +1,77 @@
+/* 接口 */
+#define function setArray(uint256[] memory arr) nonpayable returns ()
+#define function getArray() view returns (uint256[] memory)
+
+/* 方法 */
+#define macro SET_ARRAY() = takes (0) returns (0) {
+    // 假设我们将array保存在slot 0中
+    0x24 calldataload   // [len]
+    dup1                // [len, len]
+    // 将 len 保存到 slot 0x00
+    0x00 sstore         // [len] storage: [0x00: len]
+    0x00 0x00 sha3           // [sha3(0), len] storage: [0x00: len]
+    0x00                // [index(0), sha3(0), len] storage: [0x00: len]
+    
+    // 循环
+    loop: 
+        // 比较index和len是否相等，如果相等，则跳转到end
+        dup3 dup2 eq end jumpi // [index(i), sha3(0), len] storage: [0x00: len]
+        // 从calldata中读取array(i)
+        dup1 0x20 mul 0x44 add calldataload // [array(i), index(i), sha3(0), len] storage: [0x00: len]
+        // 保存到slot sha3(0)+i
+        dup3 dup3 add sstore        // [index(i), sha3(0), len] storage: [0x00: len, sha3(0)+i: array(i)]
+        // 更新i
+        0x01 add                    // [index(i+1), sha3(0), len] storage: [0x00: len, sha3(0)+i: array(i)]
+        // 继续循环
+        loop jump
+
+    // 循环结束，返回
+    end:
+        stop
+}
+
+#define macro GET_ARRAY() = takes (0) returns (0) {
+    // 假设我们将array保存在slot 0中
+    // 将offset 0x20保存到memory
+    0x20 0x00 mstore    // [] memory: [0x00: 0x20]
+    // 从slot 0读取数组长度
+    0x00 sload dup1     // [len, len] memory: [0x00: 0x20]
+    // 将数组长度保存到memory
+    0x20 mstore         // [len] memory: [0x00: 0x20, 0x20: len]
+    // 计算sha3(0)
+    0x00 0x00 sha3      // [sha3(0), len] memory: [0x00: 0x20, 0x20: len]
+    0x00                // [index(0), sha3(0), len] memory: [0x00: 0x20, 0x20: len]
+    
+    // 循环
+    loop: 
+        // 比较index和len是否相等，如果相等，则跳转到end
+        dup3 dup2 eq end jumpi  // [index(i), sha3(0), len] memory: [0x00: 0x20, 0x20: len]
+        // 从storage中读取array(i): slot sha3(0)+i
+        dup2 dup2 add sload     // [array(i), index(i), sha3(0), len] memory: [0x00: 0x20, 0x20: len]
+        // 保存到memory
+        dup2 0x20 mul 0x40 add mstore // [index(i), sha3(0), len] memory: [0x00: 0x20, 0x20: len, 0x40+0x20*i: array(i)]
+        // 更新i
+        0x01 add                // [index(i+1), sha3(0), len] memory: [0x00: 0x20, 0x20: len, 0x40+0x20*i: array(i)]
+        // 继续循环
+        loop jump
+
+    // 循环结束，返回
+    end:
+        // 返回returndata
+        0x20 mul 0x40 add 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // 通过selector判断要调用哪个函数
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(setArray) eq set_array jumpi
+    dup1 __FUNC_SIG(getArray) eq get_array jumpi
+
+    // 如果没有匹配的函数，就revert
+    0x00 0x00 revert
+
+    set_array:
+        SET_ARRAY()
+    get_array:
+        GET_ARRAY()
+}

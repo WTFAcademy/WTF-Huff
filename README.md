@@ -38,6 +38,8 @@
 
 **第12讲：字符串**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/12_String.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/12_String/readme.md) 
 
+**第13讲：数组**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/13_Array.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/13_Array/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境
