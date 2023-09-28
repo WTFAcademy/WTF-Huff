@@ -36,6 +36,8 @@
 
 **第11讲：循环**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/11_Loop.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/11_Loop/readme.md) 
 
+**第12讲：字符串**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/12_String.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/12_String/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境
