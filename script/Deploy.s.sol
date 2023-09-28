@@ -17,6 +17,6 @@ interface I12_String {
 contract Deploy is Script {
   function run() public returns (SimpleStore simpleStore, I12_String i12_String) {
     simpleStore = SimpleStore(HuffDeployer.deploy("SimpleStore"));
-    i12_String = I12_String(HuffDeployer.deploy("I12_String"));
+    i12_String = I12_String(HuffDeployer.deploy("12_String"));
   }
 }

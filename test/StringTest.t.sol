@@ -11,17 +11,17 @@ contract StringTest is Test {
 
     /// @dev Setup the testing environment.
     function setUp() public {
-        i12_String = I12_String(HuffDeployer.deploy("I12_String"));
+        i12_String = I12_String(HuffDeployer.deploy("12_String"));
     }
 
     /// @dev Ensure that you can set and get the value.
-    function testSetAndGetValue() public {
+    function testSetAndGetString() public {
         string memory str_ = "WTF";
         i12_String.setString(str_);
         string memory str_get = i12_String.getString();
         console.log(str_get);
         console.log(str_);
-        // assertEq(str_, i12_String.getString());
+        assertEq(str_, i12_String.getString());
     }
 }
 

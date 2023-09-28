@@ -161,6 +161,50 @@ huffc src/12_String.huff -r
 
 ![](./img/12-2.png)
 
+## 使用Foundry测试
+
+我们可以使用Foundry写一个测试，用Solidity来验证咱们写的Huff合约是否真的能保存和返回Solidity的`string`类型变量。
+
+测试合约：
+
+```solidity
+// SPDX-License-Identifier: Unlicense
+pragma solidity ^0.8.15;
+
+import "foundry-huff/HuffDeployer.sol";
+import "forge-std/Test.sol";
+import "forge-std/console.sol";
+
+contract StringTest is Test {
+    /// @dev Address of the I12_String contract.
+    I12_String public i12_String;
+
+    /// @dev Setup the testing environment.
+    function setUp() public {
+        i12_String = I12_String(HuffDeployer.deploy("12_String"));
+    }
+
+    /// @dev Ensure that you can set and get the value.
+    function testSetAndGetString() public {
+        string memory str_ = "WTF";
+        i12_String.setString(str_);
+        string memory str_get = i12_String.getString();
+        console.log(str_get);
+        console.log(str_);
+        assertEq(str_, i12_String.getString());
+    }
+}
+
+interface I12_String {
+	function getString() external view returns (string memory);
+	function setString(string memory) external;
+}
+```
+
+在命令行输入中输入`forge test`运行测试合约，可以看到测试通过！
+
+![](./img/12-3.png)
+
 ## 总结
 
 这一讲，我们介绍了如何在Huff中写入并读取`string`类型，并在`evm.codes`上成功运行了合约。
