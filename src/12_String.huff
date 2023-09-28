@@ -1,0 +1,39 @@
+/* 接口 */
+#define function setString(string memory str_) nonpayable returns ()
+#define function getString() view returns (string memory)
+
+/* 方法 */
+#define macro SET_STRING() = takes (0) returns (0) {
+    0x24 calldataload   // [len]
+    0x00 sstore         // [] storage: [0x00: len]
+
+    0x44 calldataload   // [str]
+    0x00 0x00 sha3 sstore // [] storage: [0x00: len, sha3(0): str]
+    stop
+}
+
+#define macro GET_STRING() = takes (0) returns (0) {
+    0x20 0x00 mstore    // [] memory: [0x00: 0x20]
+
+    0x00 sload          // [len] memory: [0x00: 0x20]
+    0x20 mstore         // [] memory: [0x00: 0x20, 0x20: len]
+
+    0x00 0x00 sha3 sload     // [str] memory: [0x00: 0x20, 0x20: len]
+    0x40 mstore         // [] memory: [0x00: 0x20, 0x20: len, 0x40: str]   
+
+    0x60 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // 通过selector判断要调用哪个函数
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(setString) eq set_string jumpi
+    dup1 __FUNC_SIG(getString) eq get_string jumpi
+    // 如果没有匹配的函数，就revert
+    0x00 0x00 revert
+
+    set_string:
+        SET_STRING()
+    get_string:
+        GET_STRING()    
+}

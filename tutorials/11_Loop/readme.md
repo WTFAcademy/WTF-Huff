@@ -76,7 +76,7 @@ function sumTo(uint256 n) public pure returns(uint256){
     // 循环结束，返回结果
     end:
         // 返回值
-        0x20 0x40 return
+        0x64 0x00 return
 }
 
 
