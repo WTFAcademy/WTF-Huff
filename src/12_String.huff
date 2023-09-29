@@ -4,21 +4,24 @@
 
 /* 方法 */
 #define macro SET_STRING() = takes (0) returns (0) {
+    // 如果string长度<32字节，高阶字节存储string内容，最小一位的字节存储string长度的两倍，即len*2
     0x24 calldataload   // [len]
-    0x00 sstore         // [] storage: [0x00: len]
-
-    0x44 calldataload   // [str]
-    0x00 0x00 sha3 sstore // [] storage: [0x00: len, sha3(0): str]
+    0x02 mul            // [len*2]
+    0x44 calldataload   // [str, len*2]
+    add                 // [str+len*2]
+    0x00 sstore // [] storage: [0x00: str+len*2]
     stop
 }
 
 #define macro GET_STRING() = takes (0) returns (0) {
     0x20 0x00 mstore    // [] memory: [0x00: 0x20]
 
-    0x00 sload          // [len] memory: [0x00: 0x20]
-    0x20 mstore         // [] memory: [0x00: 0x20, 0x20: len]
+    0x00 sload          // [str+len*2] memory: [0x00: 0x20]
+    dup1                // [str+len*2, str+len*2] memory: [0x00: 0x20]
+    0xFF and 0x01 shr   // [len, str+len*2] memory: [0x00: 0x20]
+    0x20 mstore         // [str+len*2] memory: [0x00: 0x20, 0x20: len]
 
-    0x00 0x00 sha3 sload     // [str] memory: [0x00: 0x20, 0x20: len]
+    0xFF not and        // [str] memory: [0x00: 0x20]
     0x40 mstore         // [] memory: [0x00: 0x20, 0x20: len, 0x40: str]   
 
     0x60 0x00 return
