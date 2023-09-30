@@ -23,7 +23,7 @@ tags:
 
 ## 映射
 
-在Solidity合约中，我们经常会用到映射变量。Huff并不原生支持映射类型，但是我们可以根据Solidity的存储布局和ABI标准，在Huff中实现它。
+在Solidity合约中，我们经常会用到映射变量。Huff并不原生支持映射类型，但是我们可以根据Solidity的存储布局，在Huff中实现它。
 
 要实现的Solidity合约：
 
