@@ -44,6 +44,8 @@
 
 **第15讲：引入**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/15_Import.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/15_Import/readme.md) 
 
+**第16讲：权限控制**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/16_Ownable.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/16_Ownable/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境
