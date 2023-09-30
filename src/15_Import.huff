@@ -1,0 +1,21 @@
+#include "./15_Imported.huff"
+
+/* 方法 */
+#define macro SET_VALUE() = takes (0) returns (0) {
+    0x04 calldataload   // [value]
+    [VALUE_LOCATION]    // [ptr, value]
+    sstore              // []
+    stop                // []
+}
+
+#define macro GET_VALUE() = takes (0) returns (0) {
+    // 从存储中加载值
+    [VALUE_LOCATION]   // [ptr]
+    sload                // [value]
+
+    // 将值存入内存
+    0x00 mstore
+
+    // 返回值
+    0x20 0x00 return
+}
