@@ -14,6 +14,7 @@ out/
 
 # huffc artifacts
 artifacts
+.DS_Store
 
 # Ignore flattened files
 flattened.txt
