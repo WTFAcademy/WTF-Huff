@@ -1,0 +1,47 @@
+/* 接口 */
+#define function setMap(uint256 key, uint256 value) nonpayable returns ()
+#define function getMap(uint256 key) view returns (uint256 value)
+
+/* 方法 */
+#define macro SET_MAP() = takes (0) returns (0) {
+    // 假设我们将mapping保存在slot 0中，键值对为 k-v
+    0x24 calldataload   // [v]
+    0x04 calldataload   // [k, v]
+
+    0x00 mstore         // [v] memory: [0x00: k]
+    0x40 0x00 sha3      // [sha3(k.0), v] memory: [0x00: k]
+
+    sstore              // [] memory: [0x00: k] storage [sha3(k.0): v]
+
+    stop
+}
+
+#define macro GET_MAP() = takes (0) returns (0) {
+    // 假设我们将mapping保存在slot 0中
+    0x04 calldataload   // [k]
+    0x00 mstore         // [] memory: [0x00: k]
+    0x40 0x00 sha3      // [sha3(k.0)] memory: [0x00: k]
+
+    sload               // [v] memory: [0x00: k]
+
+    // 将值存入内存
+    0x00 mstore         // [] memory: [0x00: v]
+
+    // 返回值
+    0x20 0x00 return
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // 通过selector判断要调用哪个函数
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(setMap) eq set_map jumpi
+    dup1 __FUNC_SIG(getMap) eq get_map jumpi
+
+    // 如果没有匹配的函数，就revert
+    0x00 0x00 revert
+
+    set_map:
+        SET_MAP()
+    get_map:
+        GET_MAP()
+}

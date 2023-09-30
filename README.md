@@ -40,6 +40,8 @@
 
 **第13讲：数组**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/13_Array.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/13_Array/readme.md) 
 
+**第14讲：映射**：[Code](https://github.com/WTFAcademy/WTF-Huff/blob/main/src/14_Mapping.huff) | [文章](https://github.com/WTFAcademy/WTF-Huff/blob/main/tutorials/14_Mapping/readme.md) 
+
 ## 运行模版项目
 
 ### 配置环境
