@@ -24,7 +24,7 @@ tags:
 
 ## 控制流
 
-EVM底层主要是使用跳转指令`JUMPI`和`JUMPDEST`完成代码的流程控制。如果你对它们不了解，建议阅读[WTF EVM Opcodes教程第9讲](https://github.com/WTFAcademy/WTF-EVM-Opcodes/tree/main/09_FlowOp)。
+EVM底层主要是使用跳转指令`JUMP`，`JUMPI`，和`JUMPDEST`进行代码的流程控制。如果你对它们不了解，建议阅读[WTF EVM Opcodes教程第9讲](https://github.com/WTFAcademy/WTF-EVM-Opcodes/tree/main/09_FlowOp)。
 
 为了方便开发者使用跳转指令，Huff提供了跳转标签，可以在宏或函数哪定义，由冒号后跟一个单词表示。注意，虽然看起来标签是由于缩进而作为代码块的作用域，但它们实际上只是字节码中的跳转目的地。如果标签下面存在操作，除非程序计数器被更改或执行由`revert`、`return`、`stop`或`selfdestruct`操作码中断，否则它们将被执行。
 

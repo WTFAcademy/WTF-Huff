@@ -1,0 +1,59 @@
+/* Interface */
+#define function batchTransferERC20(address token, uint256 total, address[] recipients, uint256[] amounts) nonpayable returns ()
+#define function transfer(address,uint256) nonpayable returns (bool)
+#define function transferFrom(address,address,uint256) nonpayable returns ()
+
+/* Method */
+#define macro BATCH_TRANSFER_ERC20() = takes (0) returns (0) {
+    // calldata:
+    // 0x00: sig | 0x04: token | 0x24: total | 0x44: recipients[] | 0x64: amounts[]
+    
+    // 1. safeTransfer total amount of token from sender to this contract
+    0x04 calldataload   // [token]
+    0x24 calldataload   // [total, token]
+    address             // [this, total, token]
+    // store args in memory
+    __FUNC_SIG(transferFrom) 0x00 mstore // [this, total, token] memory: [0x00: sig]
+    caller 0x20 mstore               // [this, total, token] memory: [0x00: sig, 0x20: sender, 0x40: this]
+    dup1 0x40 mstore                 // [this, total, token] memory: [0x00: sig, 0x20: sender, 0x40: this]
+    dup2 0x60 mstore                 // [this, total, token] memory: [0x00: sig, 0x20: sender, 0x40: this, 0x60: total]
+    // call transferFrom
+    // return size is 0x20, return offset is 0x60
+    // arg size is 0x64, arg offset if 0x1c (where sig start)
+    0x20                        // [ret_size, this, total, token]
+    0x60                        // [ret_offset, ret_size, this, total, token]
+    0x64                        // [args_size, ret_offset, ret_size, this, total, token]
+    0x1c                        // [args_offset, args_size, ret_offset, ret_size, this, total, token]
+    0x00                        // [value, args_offset, args_size, ret_offset, ret_size, this, total, token]
+    dup8                        // [to, value, args_offset, args_size, ret_offset, ret_size, this, total, token]
+    gas                         // [gas, to, value, args_offset, args_size, ret_offset, ret_size, this, total, token]
+    call                        // [success, this, total, token]
+    // safeTransferFrom ERC20 token
+    returndatasize iszero       // [returndatasize == 0, success, this, total, token]
+    0x60                        // [ret_offset, returndatasize == 0, success, this, total, token]
+    mload                       // [ret_data, returndatasize == 0, success, this, total, token]
+    0x01 eq                     // [ret_data == true, returndatasize == 0, success]
+    or                          // [ret_data == true | returndatasize == 0, success, this, total, token]
+    and                         // [success & (data == 0x01 | returndatasize == 0), this, total, token]
+    transferFrom_success jumpi      // [this, total, token]
+    // revert if call failed
+    0x00 dup1 revert            // 
+    // transferFrom sucess
+    transferFrom_success:           // [this, total, token]
+
+    // end of the loop, stop
+    end:
+        stop
+}
+
+#define macro MAIN() = takes (0) returns (0) {
+    // 通过selector判断要调用哪个函数
+    0x00 calldataload 0xE0 shr
+    dup1 __FUNC_SIG(batchTransferERC20) eq batch_transfer_erc20 jumpi
+
+    // 如果没有匹配的函数，就revert
+    0x00 0x00 revert
+
+    batch_transfer_erc20:
+        BATCH_TRANSFER_ERC20()
+}
