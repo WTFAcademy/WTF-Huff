@@ -35,17 +35,17 @@ Therefore, you need to be familiar with the working principles of Solidity and E
 
 ## Hello Huff
 
-下面我们通过一个简单的合约`SimpleStore.huff`来学习Huff合约的结构。
+Below we use a simple contract `SimpleStore.huff` to learn the structure of the Huff contract.
 
 ```c
-/* 接口 */
+/* Interface */
 #define function setValue(uint256) nonpayable returns ()
 #define function getValue() view returns (uint256)
 
-/* 存储槽位 */
+/* Storage slot */
 #define constant VALUE_LOCATION = FREE_STORAGE_POINTER()
 
-/* 方法 */
+/* Method */
 #define macro SET_VALUE() = takes (0) returns (0) {
     0x04 calldataload   // [value]
     [VALUE_LOCATION]    // [ptr, value]
@@ -54,24 +54,24 @@ Therefore, you need to be familiar with the working principles of Solidity and E
 }
 
 #define macro GET_VALUE() = takes (0) returns (0) {
-    // 从存储中加载值
+    // Load value from storage
     [VALUE_LOCATION]   // [ptr]
     sload                // [value]
 
-    // 将值存入内存
+    // Store value in memory
     0x00 mstore
 
-    // 返回值
+    // Return value
     0x20 0x00 return
 }
 
-// 合约的主入口，判断调用的是哪个函数
+// The main entrance of the contract to determine which function is called
 #define macro MAIN() = takes (0) returns (0) {
-    // 通过selector判断要调用哪个函数
+    // Determine which function to call through selector
     0x00 calldataload 0xE0 shr
     dup1 __FUNC_SIG(setValue) eq set jumpi
     dup1 __FUNC_SIG(getValue) eq get jumpi
-    // 如果没有匹配的函数，就revert
+    // If there is no matching function, revert
     0x00 0x00 revert
 
     set:
@@ -81,24 +81,25 @@ Therefore, you need to be familiar with the working principles of Solidity and E
 }
 ```
 
-下面，我们分段来学习这个huff合约。
+Next, we will learn this huff contract in sections.
 
-首先，你需要定义合约的接口，像Solidity的接口一样，需要使用`#define`关键字。
+First, you need to define the interface of the contract. Like the interface of Solidity, you need to use the `#define` keyword.
 
 ```c
-/* 接口 */
+/* Interface */
 #define function setValue(uint256) nonpayable returns ()
 #define function getValue() view returns (uint256)
 ```
 
-接下来，你需要声明存储槽位（storage slot），就像在Solidity合约中声明状态变量一样。`FREE_STORAGE_POINTER()`指向合约中未使用的存储槽（free storage）。
+Next, you need to declare the storage slot, just like you declare state variables in the Solidity contract.
+`FREE_STORAGE_POINTER()`Points to an unused storage slot in the contract（free storage）。
 
 ```c
-/* 存储槽位 */
+/* Storage slot */
 #define constant VALUE_LOCATION = FREE_STORAGE_POINTER()
 ```
 
-最后一部分要写合约中的方法（函数），本合约有`3`个方法：
+The last part is to write the methods (functions) in the contract. This contract has `3` methods.
 
 1. `SET_VALUE()`: 改变`VALUE_LOCATION`存储的值。它先使用`calldataload`从calldata中读取变量的新值，然后使用`sstore`将新值存储到`VALUE_LOCATION`。
 2. `GET_VALUE()`: 读取`VALUE_LOCATION`存储的值。它利用`sload`将`VALUE_LOCATION`存储的值推入堆栈，然后利用`mstore`将值存到内存，最后使用`return`返回。
