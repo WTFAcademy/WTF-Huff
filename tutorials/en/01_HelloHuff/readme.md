@@ -15,21 +15,21 @@ Twitter：[@0xAA_Science](https://twitter.com/0xAA_Science)
 
 Community：[Discord](https://discord.gg/5akcruXrsk)｜WeChat Group(https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[Official Website wtf.academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
+All code and tutorials are open source on github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
 
 -----
 
-这一讲，我们将介绍Huff语言，并使用Foundry运行模版合约。
+In this lecture, we will introduce the Huff language and use Foundry to run template contracts.
 
 ## Huff
 
-大家可能很熟悉Solidity，但是几乎没听说过Huff。Huff是一个低级的、为Ethereum智能合约设计的编程语言，它允许开发者编写高度优化的EVM字节码。Huff的两大特点：
+You may be familiar with Solidity, but have almost never heard of Huff. Huff is a low-level programming language designed for Ethereum smart contracts that allows developers to write highly optimized EVM bytecode. Huff’s two major features:
 
-1. 难学: Huff不像Solidity抽象了EVM的底层工作原理，而是让开发者直接操作EVM的堆栈、内存、和存储。
+1. Difficult to learn: Unlike Solidity, Huff abstracts the underlying working principles of EVM, but allows developers to directly operate the stack, memory, and storage of EVM.
 
-2. 高效: Huff像是给EVM Opcodes套了一层壳，几乎是直接在字节码层面编写合约，gas优化到极致。
+2. Efficiency: Huff seems to have put a shell on EVM Opcodes, writing contracts almost directly at the bytecode level, with gas optimization to the extreme.
 
-因此，你在学习Huff前需要熟悉Solidity和EVM的工作原理。推荐的先修课程：
+Therefore, you need to be familiar with the working principles of Solidity and EVM before learning Huff. Recommended prerequisite courses:
 1. [WTF Solidity](https://github.com/WTFAcademy/WTF-Solidity)
 2. [WTF EVM Opcodes](https://github.com/WTFAcademy/WTF-EVM-Opcodes)
 
