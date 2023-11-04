@@ -101,12 +101,12 @@ Next, you need to declare the storage slot, just like you declare state variable
 
 The last part is to write the methods (functions) in the contract. This contract has `3` methods.
 
-1. `SET_VALUE()`: 改变`VALUE_LOCATION`存储的值。它先使用`calldataload`从calldata中读取变量的新值，然后使用`sstore`将新值存储到`VALUE_LOCATION`。
-2. `GET_VALUE()`: 读取`VALUE_LOCATION`存储的值。它利用`sload`将`VALUE_LOCATION`存储的值推入堆栈，然后利用`mstore`将值存到内存，最后使用`return`返回。
-3. `MAIN()`: 主宏，定义了合约的主入口。当对合约进行外部调用时，会运行这段代码来确定应该调用哪个函数。他先用`0x00 calldataload 0xE0 shr`读取calldata中的函数选择器，然后查看它是否与`SET_VALUE()`或`GET_VALUE()`匹配。如果匹配，就调用相应的函数；否则，回滚交易。
+1. `SET_VALUE()`: Change the value stored in `VALUE_LOCATION`. It first uses `calldataload` to read the new value of the variable from calldata, and then uses `sstore` to store the new value into `VALUE_LOCATION`.
+2. `GET_VALUE()`: Read the value stored in `VALUE_LOCATION`. It uses `sload` to push the value stored in `VALUE_LOCATION` onto the stack, then uses `mstore` to store the value into memory, and finally uses `return` to return.
+3. `MAIN()`: Main macro, which defines the main entry of the contract. When an external call is made to the contract, this code is run to determine which function should be called. He first reads the function selector in calldata with `0x00 calldataload 0xE0 shr`, and then checks whether it matches `SET_VALUE()` or `GET_VALUE()`. If it matches, call the corresponding function; otherwise, roll back the transaction.
 
 ```c
-/* 方法 */
+/* method */
 #define macro SET_VALUE() = takes (0) returns (0) {
     0x04 calldataload   // [value]
     [VALUE_LOCATION]    // [ptr, value]
@@ -115,24 +115,24 @@ The last part is to write the methods (functions) in the contract. This contract
 }
 
 #define macro GET_VALUE() = takes (0) returns (0) {
-    // 从存储中加载值
+    // Load value from storage
     [VALUE_LOCATION]   // [ptr]
     sload                // [value]
 
-    // 将值存入内存
+    // Store value in memory
     0x00 mstore
 
-    // 返回值
+    // return value
     0x20 0x00 return
 }
 
-// 合约的主入口，判断调用的是哪个函数
+//The main entrance of the contract, determine which function is called
 #define macro MAIN() = takes (0) returns (0) {
-    // 通过selector判断要调用哪个函数
+    // Determine which function to call through selector
     0x00 calldataload 0xE0 shr
     dup1 __FUNC_SIG(setValue) eq set jumpi
     dup1 __FUNC_SIG(getValue) eq get jumpi
-    // 如果没有匹配的函数，就revert
+    // If there is no matching function, revert
     0x00 0x00 revert
 
     set:
@@ -142,45 +142,45 @@ The last part is to write the methods (functions) in the contract. This contract
 }
 ```
 
-## 运行模版项目
+## Run template project
 
-下面，我们介绍如何使用Foundry的插件foundry-huff运行模版项目。
+Next, we introduce how to use Foundry’s plug-in foundry-huff to run the template project.
 
-### 配置环境
+### Configuration Environment
 
-首先，你需要在本地安装以下内容： 
+First, you need to install the following locally:
 
 - [Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)  
-    - 如果您可以运行`git --version`，则说明您已正确安装。
+    - If you can run `git --version`, you have installed it correctly.
 - [Foundry / Foundryup](https://github.com/gakonst/foundry)
-    - 这将会安装`forge`，`cast`和`anvil`
-    - 通过运行`forge --version`并获取类似`forge 0.2.0 (92f8951 2022-08-06T00:09:32.96582Z)`的输出，您可以检测是否已正确安装。
-    - 要获取每个工具的最新版本，只需运行`foundryup`。
+    - This will install `forge`, `cast` and `anvil`
+     - You can check if it has been installed correctly by running `forge --version` and getting output like `forge 0.2.0 (92f8951 2022-08-06T00:09:32.96582Z)`.
+     - To get the latest version of each tool, just run `foundryup`.
 - [Huff Compiler](https://docs.huff.sh/get-started/installing/)
-    - 如果您可以运行`huffc --version`并获取类似`huffc 0.3.0`的输出，则说明您已正确安装。
+    - If you can run `huffc --version` and get output similar to `huffc 0.3.0`, you have installed it correctly.
 
-### 快速开始
+### Quick Start
 
-1. 克隆[https://github.com/WTFAcademy/WTF-Huff]或[Huff模版仓库](https://github.com/huff-language/huff-project-template)。
+1. Clone [https://github.com/WTFAcademy/WTF-Huff] or [Huff template repository](https://github.com/huff-language/huff-project-template).
 
-运行：
+run:
 
 ```
 git clone https://github.com/WTFAcademy/WTF-Huff
 cd WTF-Huff
 ```
 
-2. 安装依赖
+2. Install dependencies
 
-克隆并进入您的仓库后，您需要安装必要的依赖项。为此，只需运行：
+After cloning and entering your repository, you need to install the necessary dependencies. To do this, just run:
 
 ```shell
 forge install
 ```
 
-3. 构建 & 测试
+3. Build & Test
 
-要构建并测试您的合约，您可以运行：
+To build and test your contract, you can run:
 
 ```shell
 forge build
@@ -189,36 +189,36 @@ forge test
 
 ![](./img/1-1.png)
 
-4. 使用`huffc`打印huff合约的字节码：
+4. Use `huffc` to print the bytecode of the huff contract:
 
 ```shell
 huffc src/SimpleStore.huff -b
 ```
 
-控制台输会输出合约的字节码（creation code）:
+The console output will output the bytecode of the contract（creation code）:
 
 ```
 602e8060093d393df35f3560e01c8063552410771461001e5780632096525514610025575f5ffd5b6004355f55005b5f545f5260205ff3
 ```
 
-如果想获取runtime code，可以使用`huffc -r`。
+If you want to get the runtime code, you can use `huffc -r`.
 
-有关如何使用Foundry的更多信息，请查看[Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge)和[foundry-huff library repository](https://github.com/huff-language/foundry-huff)。
+For more information on how to use Foundry, check out the [Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge) and the [foundry-huff library repository](https:// github.com/huff-language/foundry-huff)
 
-### 项目结构图
+### Project structure diagram
 
 ```ml
 lib
 ├─ forge-std — https://github.com/foundry-rs/forge-std
 ├─ foundry-huff — https://github.com/huff-language/foundry-huff
 scripts
-├─ Deploy.s.sol — 部署脚本
+├─ Deploy.s.sol — department script
 src
-├─ SimpleStore — Huff中的简单存储合约
+├─ SimpleStore — Simple storage contract in Huff
 test
-└─ SimpleStore.t — SimpleStore测试
+└─ SimpleStore.t — SimpleStore test
 ```
 
-## 总结
+## Summary
 
-这一讲，我们介绍了Huff语言，学习了Huff合约结构，并运行了一个模版项目。Huff是一个低级的、为以太坊智能合约设计的编程语言，学习它不仅可以让你写出更优化的合约，还可以让你深入理解EVM。
+In this lecture, we introduced the Huff language, learned the Huff contract structure, and ran a template project. Huff is a low-level programming language designed for Ethereum smart contracts. Learning it will not only allow you to write more optimized contracts, but also give you a deeper understanding of the EVM.
