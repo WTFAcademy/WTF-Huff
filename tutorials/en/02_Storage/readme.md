@@ -27,8 +27,6 @@ Storage in EVM is a persistent storage space in which data can be maintained bet
 
 ![](./img/2-1.png)
 
-### 声明存储槽
-
 ### Declare storage slot
 
 Storage in Huff is not complicated. You can track unused storage slots (free storage) in the contract through the `FREE_STORAGE_POINTER()` keyword. Below, we declare `2` storage slots `STORAGE_SLOT0` and `STORAGE_SLOT1`:
