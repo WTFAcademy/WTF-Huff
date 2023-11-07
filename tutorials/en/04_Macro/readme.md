@@ -79,6 +79,6 @@ Convert to formatted table:
 
 We can see that what this contract does is store `0x0420` in storage slot `0` using the `SSTORE` instruction.
 
-## Summarize
+## Summary
 
 In this lecture, we introduced the macros and `macro` keyword in Huff. Macros and functions in Huff are very similar, but developers should use macros rather than functions most of the time.
