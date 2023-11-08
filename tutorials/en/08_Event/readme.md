@@ -21,7 +21,7 @@ All codes and tutorials are open source on github: [github.com/AmazingAng/WTF-Hu
 
 In this lecture, we will introduce events in Huff, which, like events in Solidity, can store data in the log of `EVM`.
 
-## event
+## Event
 
 In Solidity, we often use `event` to define and trigger events. When these events are triggered, they generate logs that permanently store the data on the blockchain. Logs are divided into topics (`topic`) and data (`data`). The first topic is usually the hash of the event signature, and the following topics are the event parameters modified by `indexed`. If you don’t know about `event`, please read the [corresponding chapter] of WTF Solidity(https://github.com/AmazingAng/WTF-Solidity/tree/main/12_Event).
 
