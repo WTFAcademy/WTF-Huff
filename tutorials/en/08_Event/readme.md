@@ -1,51 +1,50 @@
 ---
-title: 08. 事件
+title: 08. Event
 tags:
-  - huff
-  - interface
-  - event
-  - bytecode
+   -huff
+   -interface
+   - event
+   - bytecode
 ---
 
-# WTF Huff极简入门: 08. 事件
+#WTF Huff Minimalist Introduction: 08. Event
 
-我最近在重新学Huff，巩固一下细节，也写一个“Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
+I'm re-learning Huff recently, consolidating the details, and writing a "Minimalist Introduction to Huff" for novices (programming experts can find another tutorial). I will update 1-3 lectures every week.
 
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)
+Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)
 
-社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy)
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
+All codes and tutorials are open source on github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
 
 -----
 
-这一讲，我们将介绍Huff中的事件，和Solidity中的事件一样，它可以将数据存储在`EVM`的日志中。
+In this lecture, we will introduce events in Huff, which, like events in Solidity, can store data in the log of `EVM`.
 
-## 事件
+## event
 
-在Solidity中，我们常常使用`event`来定义和触发事件。当这些事件被触发时，它们会生成日志，将数据永久存储在区块链上。日志分为主题（`topic`）和数据（`data`）。第一个主题通常是事件签名的哈希值，后面的主题是由`indexed`修饰的事件参数。如果你对`event`不了解，请阅读WTF Solidity的[相应章节](https://github.com/AmazingAng/WTF-Solidity/tree/main/12_Event)。
+In Solidity, we often use `event` to define and trigger events. When these events are triggered, they generate logs that permanently store the data on the blockchain. Logs are divided into topics (`topic`) and data (`data`). The first topic is usually the hash of the event signature, and the following topics are the event parameters modified by `indexed`. If you don’t know about `event`, please read the [corresponding chapter] of WTF Solidity(https://github.com/AmazingAng/WTF-Solidity/tree/main/12_Event).
 
-EVM中的`LOG`指令用于创建这些日志。指令`LOG0`到`LOG4`的区别在于它们包含的主题数量。例如，`LOG0`没有主题，而`LOG4`有四个主题。如果你不了解它们，请阅读[WTF EVM Opcodes第15讲](https://github.com/WTFAcademy/WTF-EVM-Opcodes/blob/main/15_LogOp/readme.md)。
+The `LOG` directive in the EVM is used to create these logs. Instructions `LOG0` through `LOG4` differ in the number of topics they contain. For example, `LOG0` has no topics, while `LOG4` has four topics. If you don't know them, please read [WTF EVM Opcodes Lecture 15](https://github.com/WTFAcademy/WTF-EVM-Opcodes/blob/main/15_LogOp/readme.md).
 
-## Huff中的事件
+## Events in Huff
 
-下面我们改造上一讲的`Simple Store`合约，在调用`SET_VALUE()`方法改变值的时候，会释放一个`ValueChanged`事件，将新值记录到EVM日志中。
+Next, we modify the `Simple Store` contract in the previous lecture. When the `SET_VALUE()` method is called to change the value, a `ValueChanged` event will be released and the new value will be recorded in the EVM log.
 
-首先你可以在Huff接口中定义合约的事件：
+First, you can define the contract's events in the Huff interface:
 
 ```c
 #define event ValueChanged(uint256 indexed)
 ```
 
-接下来我们在`SET_VALUE()`方法中释放`ValueChanged`事件。首先，要确定我们要用哪个`LOG`指令来释放事件。因为我们事件只有一个被索引的数据，再加上事件哈希，就是`2`个主题，应使用`log2`，输入堆栈为`[0, 0, sig, value]`。接下来，我们只需要在方法中构造所需的堆栈，再在结尾使用`log2`输出日志即可。我们可以使用内置函数`__EVENT_HASH()`将事件哈希压入堆栈。
-
+Next we release the `ValueChanged` event in the `SET_VALUE()` method. First, we need to determine which `LOG` directive we want to use to release the event. Because our event only has one indexed data, plus the event hash, there are `2` topics, `log2` should be used, and the input stack is `[0, 0, sig, value]`. Next, we only need to construct the required stack in the method, and then use `log2` to output the log at the end. We can push the event hash onto the stack using the built-in function `__EVENT_HASH()`.
 ```c
 #define macro SET_VALUE() = takes (0) returns (0) {
     0x04 calldataload   // [value]
     dup1                // [value, value]
     [VALUE_LOCATION]    // [ptr, value, value]
     sstore              // [value]
-    // 释放事件
+    // release event
     __EVENT_HASH(ValueChanged) // [sig, value]
     push0 push0         // [0, 0, sig, value]
     log2                // []
@@ -53,15 +52,15 @@ EVM中的`LOG`指令用于创建这些日志。指令`LOG0`到`LOG4`的区别在
 }
 ```
 
-## 输出Solidity接口/ABI
+## Output Solidity interface/ABI
 
-我们可以使用`huffc -g`命令将Huff合约的接口转为Solidity合约接口/ABI:
+We can use the `huffc -g` command to convert the Huff contract interface to the Solidity contract interface/ABI:
 
 ```shell
 huffc src/08_Event.huff -g
 ```
 
-输出的接口将保存在和`08_Event.huff`相同的文件夹下，例如`src/I08_Event.sol`。可以看到，我们定义的事件已经被包含在接口中：
+The output interface will be saved in the same folder as `08_Event.huff`, for example `src/I08_Event.sol`. As you can see, the events we defined have been included in the interface:
 
 ```solidity
 interface I08_Event {
@@ -71,21 +70,21 @@ interface I08_Event {
 }
 ```
 
-## 分析合约字节码
+## Analyze contract bytecode
 
-我们可以使用`huffc`命令获取上面合约的runtime code:
+We can use the `huffc` command to obtain the runtime code of the above contract:
 
 ```shell
 huffc src/08_Events.huff -r
 ```
 
-打印出的bytecode为：
+The printed bytecode is:
 
 ```
 5f3560e01c8063552410771461001e578063209652551461004a575f5ffd5b600435805f557fd9ce50fb8c432a73c4ed7e62e6128c95e62f29d3ee56042781a0368f192ccdb45f5fa2005b5f545f5260205ff3
 ```
 
-转换成格式化的表格（后半部分在`stack`中省略了一个用不上的`selector`）：
+Convert to a formatted table (the second half omits an unused `selector` in `stack`):
 
 | pc   | op         | opcode                   | stack                          |
 |------|------------|--------------------------|--------------------------------|
@@ -131,8 +130,8 @@ huffc src/08_Events.huff -r
 | [51] | 5f         | PUSH0                    | 0x00 0x20                      |
 | [52] | f3         | RETURN                   |                                |
 
-其中，`[22]-[49]`是`SET_VALUE()`方法的字节码。我们可以看到，这段代码在准备好堆栈`[0x00 0x00 0xd9ce50 calldata@0x04]`之后，使用`log2`释放事件。
+Among them, `[22]-[49]` is the bytecode of the `SET_VALUE()` method. We can see that this code uses `log2` to release the event after preparing the stack `[0x00 0x00 0xd9ce50 calldata@0x04]`.
 
-## 总结
+## Summary
 
-这一讲，我们介绍了Huff中的事件，它与Solidity的事件一样，可以将数据记录在EVM日志中。Huff提供了内置方法`__EVENT_HASH()`，方便我们计算事件哈希并将它压入堆栈。
+In this lecture, we introduced events in Huff, which, like Solidity events, can record data in the EVM log. Huff provides the built-in method `__EVENT_HASH()`, which allows us to calculate the event hash and push it onto the stack.
