@@ -1,31 +1,31 @@
 ---
 title: 12. String
 tags:
-  - huff
-  - interface
-  - string
-  - bytecode
+   -huff
+   -interface
+   -string
+   - bytecode
 ---
 
-# WTF Huff极简入门: 12. String
+# WTF Huff Minimalist Introduction: 12. String
 
-我最近在重新学Huff，巩固一下细节，也写一个“Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
+I'm re-learning Huff recently, consolidating the details, and writing a "Minimalist Introduction to Huff" for novices (programming experts can find another tutorial). I will update 1-3 lectures every week.
 
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)
+Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)
 
-社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy)
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
+All codes and tutorials are open source on github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
 
 -----
 
-Huff并不原生支持字符串（string），这一讲，我们介绍如何在Huff中使用String，包括将`string`保存到状态变量和在函数中返回它。
+Huff does not natively support strings. In this lecture, we introduce how to use String in Huff, including saving `string` to a state variable and returning it in a function.
 
 ## String
 
-在Solidity合约中，我们经常会用到字符串类型的变量，比如ERC20标准中的`symbol`和`name`都是字符串。Huff并不原生支持`string`类型，但是我们可以根据Solidity的存储布局和ABI标准，在Huff中实现它。
+In Solidity contracts, we often use string-type variables. For example, `symbol` and `name` in the ERC20 standard are both strings. Huff does not natively support the `string` type, but we can implement it in Huff according to Solidity's storage layout and ABI standards.
 
-要实现的Solidity合约：
+Solidity contract to be implemented:
 
 ```solidity
 // SPDX-License-Identifier: MIT
@@ -44,61 +44,61 @@ contract String {
 }
 ```
 
-## string类型进阶
+## string type advanced
 
-要在Huff中实现`string`类型，我们必须先学习它是如何在EVM的存储、`calldata`，和`returndata`中布局的。
+To implement the `string` type in Huff, we must first learn how it is laid out in the EVM's storage, `calldata`, and `returndata`.
 
-### 存储布局
+### Storage layout
 
-在Solidity中，`string`和`bytes`存储的方式相同。
+In Solidity, `string` and `bytes` are stored in the same way.
 
-- 对于短字节/字符串（长度<=`31`字节），字符串的内容和长度会存到同一个slot中，就像存储`bytes32`或`uint256`那样，从而节省gas。字符串的内容从最高阶字节开始存，而字符串长度的两倍（`len * 2`）则会存储在最低阶的字节中。比如`WTF`长度为`3`，它的`ASCII`值为`575446`，在存储槽中表示为`5754460000000000000000000000000000000000000000000000000000000006`。
+- For short bytes/strings (length <=`31` bytes), the content and length of the string will be stored in the same slot, just like `bytes32` or `uint256`, thus saving gas. The contents of the string are stored starting with the highest-order byte, and twice the length of the string (`len * 2`) is stored in the lowest-order byte. For example, the length of `WTF` is `3`, and its `ASCII` value is `575446`, which is represented in the storage slot as `575446000000000000000000000000000000000000000000000000000000006`.
 
-- 对于长字节/字符串（长度>`31`字节），存储方式与动态数组相同。假设我们开始从存储槽`0`开始存储长字符串，则`slot 0`仅存储字符串的`长度 * 2 + 1`，这是为了方便和短字符串分辨。那么字符串的实际内容存在哪个存储槽呢？这个存储槽由slot `0`的`keccak256`哈希值决定，也就是存储槽`keccak256(0)`，如果一个存储槽不够，接下来的内容将存储在`keccak256(0) + 1`、`keccak256(0) + 2`等位置。
+- For long bytes/strings (length > `31` bytes), storage is the same as dynamic arrays. Suppose we start storing long strings from storage slot `0`, then `slot 0` only stores the `length * 2 + 1` of the string, which is for convenience and short string distinction. So which storage slot does the actual content of the string live in? This storage slot is determined by the `keccak256` hash value of slot `0`, which is the storage slot `keccak256(0)`. If one storage slot is not enough, the next content will be stored in `keccak256(0) + 1`, `keccak256(0) + 2` and other positions.
 
-更多关于存储布局的内容可以参照[Solidity文档](https://docs.soliditylang.org/zh/v0.8.20/internals/layout_in_storage.html)。
+For more information about storage layout, please refer to [Solidity Documentation](https://docs.soliditylang.org/zh/v0.8.20/internals/layout_in_storage.html)。
 
-### calldata布局
+### calldata layout
 
-在Solidity中，当你通过外部函数传递string类型的变量时，它会使用calldata进行编码。calldata是一个非变动、只读的存储空间，用于函数参数。对于动态类型如string，calldata编码规则如下：
+In Solidity, when you pass a variable of type string through an external function, it is encoded using calldata. calldata is an immutable, read-only storage space for function parameters. For dynamic types such as string, the calldata encoding rules are as follows:
 
-1. 函数选择器: `calldata`的前4个字节（`0x00`到`0x03`）一般是函数选择器。比如`7fcaf666`。
+1. Function selector: The first 4 bytes of `calldata` (`0x00` to `0x03`) are generally function selectors. For example `7fcaf666`.
 
-2. 偏移量: 接下来，`calldata`不直接开始存储字符串内容。它首先存储一个偏移量，该偏移量表示字符串数据开始的位置。对于一个单一的`string`参数，这个偏移量通常是`0x20`（32字节），因为前32字节用于表示这个偏移量自己（`0x04`到`0x23`）。比如`0000000000000000000000000000000000000000000000000000000000000020`
+2. Offset: Next, `calldata` does not directly start storing the string content. It first stores an offset that represents where the string data begins. For a single `string` parameter, this offset is usually `0x20` (32 bytes), since the first 32 bytes are used to represent the offset itself (`0x04` to `0x23`). For example `0000000000000000000000000000000000000000000000000000000000000020`
 
-3. 字符串长度: 在偏移量之后，即在`calldata`的`0x24`位置，会存储字符串的长度，占`32`字节（`0x24`到`0x43`）。比如`WTF`的长度为`3`字节，则这一段为`0000000000000000000000000000000000000000000000000000000000000003`
+3. String length: After the offset, that is, at the `0x24` position of `calldata`, the length of the string will be stored, accounting for `32` bytes (`0x24` to `0x43`). For example, the length of `WTF` is `3` bytes, then this section is `0000000000000000000000000000000000000000000000000000000000000003`
 
-4. 字符串内容: 在字符串长度后，我们会看到实际的字符串内容。字符串会以`UTF-8`编码（字符的`ASCII`值）的方式存储，例如`WTF`的`UTF-8`编码为`575446`。请注意，每个`calldata`槽位都有`32`字节，所以即使字符串很短，它也会被右填充到`32`字节。对于一个短字符串来说，它会占32字节（`0x44`到`0x63`）。比如`WTF`会编码为`5754460000000000000000000000000000000000000000000000000000000000`
+4. String content: After the string length, we will see the actual string content. The string will be stored in `UTF-8` encoding (the `ASCII` value of the character), for example, the `UTF-8` encoding of `WTF` is `575446`. Note that each calldata slot has 32 bytes, so even if the string is short, it will be right padded to 32 bytes. For a short string, it will occupy 32 bytes (`0x44` to `0x63`). For example, `WTF` would be encoded as `575446000000000000000000000000000000000000000000000000000000000`
 
-因此，如果我们调用的函数选择器为`7fcaf666`且字符串为`WTF`，那么`calldata`为：
+So, if we call the function selector 7fcaf666 and the string is WTF, then the calldata is:
 
 ```
 7fcaf666000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000035754460000000000000000000000000000000000000000000000000000000000
 ```
 
-### returndata布局
+### returndata layout
 
-`returndata`的布局与`calldata`类似，不同的是没有了前`4`字节的函数选择器。如果我们返回的是字符串为`WTF`，那么`returndata`为：
+The layout of `returndata` is similar to `calldata`, except that there is no function selector in the first `4` bytes. If we return a string as `WTF`, then `returndata` is:
 
 ```
 000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000035754460000000000000000000000000000000000000000000000000000000000
 ```
 
-## 在Huff中实现string类型
+## Implement string type in Huff
 
 ### setString
 
-下面我们来用Huff实现`setString()`函数，为了简单，我们只考虑短字符串（长度小于`32`字节）。它的逻辑就是：
+Next we use Huff to implement the `setString()` function. For simplicity, we only consider short strings (length less than `32` bytes). Its logic is:
 
-- 从`calldata`中读取字符串长度，偏移量为`0x24`。
-- 从`calldata`中读取字符串内容，偏移量为`0x44`。
+- Read the string length from `calldata` at offset `0x24`.
+- Read the string content from `calldata` at offset `0x44`.
 
 ```c
-/* 接口 */
+/* interface */
 #define function setString(string memory str_) nonpayable
 #define function getString() view returns (string memory)
 
-/* 方法 */
+/* method */
 #define macro SET_STRING() = takes (0) returns (0) {
     0x24 calldataload   // [len]
     0x00 sstore    // [] storage: [0x00: len]
@@ -109,7 +109,7 @@ contract String {
 }
 ```
 
-下面我们实现`getString()`函数，它的逻辑就是从存储中读取值，在内存中拼接好，最后通过`return`返回。
+Next we implement the `getString()` function. Its logic is to read the value from the storage, splice it in the memory, and finally return it through `return`.
 
 ```c
 #define macro GET_STRING() = takes (0) returns (0) {
@@ -125,15 +125,15 @@ contract String {
 }
 ```
 
-最后，我们在MAIN宏中通过selector判断要调用哪个函数。
+Finally, we use the selector in the MAIN macro to determine which function to call.
 
 ```c
 #define macro MAIN() = takes (0) returns (0) {
-    // 通过selector判断要调用哪个函数
+    // Determine which function to call through selector
     0x00 calldataload 0xE0 shr
     dup1 __FUNC_SIG(setString) eq set_string jumpi
     dup1 __FUNC_SIG(getString) eq get_string jumpi
-    // 如果没有匹配的函数，就revert
+    // If there is no matching function, revert
     0x00 0x00 revert
 
     set_string:
@@ -143,33 +143,33 @@ contract String {
 }
 ```
 
-## 分析合约字节码
+## Analyze contract bytecode
 
-我们可以使用`huffc`命令获取上面合约的runtime code:
+We can use the `huffc` command to obtain the runtime code of the above contract:
 
 ```shell
 huffc src/12_String.huff -r
 ```
 
-打印出的bytecode为：
+The printed bytecode is:
 
 ```
 5f3560e01c80637fcaf6661461001e57806389ea642f1461002c575f5ffd5b602435600202604435015f55005b60205f525f548060ff1660011c60205260ff191660405260605ff3
 ```
 
-将这段字节码复制到[evm.codes playground](https://www.evm.codes/playground?fork=shanghai)。首先，我们调用`setString()`函数。将`Calldata`设为`0x7fcaf666000000000000000000000000000000000000000000000000000000000000002400000000000000000000000000000000000000000000000000000000000000035754460000000000000000000000000000000000000000000000000000000000`（调用`setString`函数，参数为字符串类型的`"WTF"`）并点击运行。右下角的`Storage`被相应更改，运行成功。
+Copy this bytecode to [evm.codes playground](https://www.evm.codes/playground?fork=shanghai). First, we call the `setString()` function. Set `Calldata` to `0x7fcaf6660000000000000000000000000000000000000000000000000000000000024000000000000000000000000000000000 000000000000000000000000357544600000000000000000000000000000000000000000000000000000000000` (call the `setString` function, the parameter is the string type `"WTF"`) and click Run. The `Storage` in the lower right corner was changed accordingly and the operation was successful.
 
 ![](./img/12-1.png)
 
-接下来，我们调用`getString()`函数，读取存储中字符串的值。将`Calldata`设为`0x89ea642f`，并运行。可以看到，右下角的`RETURN VALUE`为`000000000000000000000000000000000000000000000000000000000000002000000000000000000000000000000000000000000000000000000000000000035754460000000000000000000000000000000000000000000000000000000000`，与预期一致，运行成功。
+Next, we call the `getString()` function to read the value of the stored string. Set `Calldata` to `0x89ea642f` and run. As you can see, the `RETURN VALUE` in the lower right corner is `0000000000000000000000000000000000000000000000000000000000000000000000000 000000000000000000000003575446000000000000000000000000000000000000000000000000000000000`, as expected, the operation was successful.
 
 ![](./img/12-2.png)
 
-## 使用Foundry测试
+## Test using Foundry
 
-我们可以使用Foundry写一个测试，用Solidity来验证咱们写的Huff合约是否真的能保存和返回Solidity的`string`类型变量。
+We can use Foundry to write a test and use Solidity to verify whether the Huff contract we wrote can really save and return Solidity's string type variable.
 
-测试合约：
+Test contract:
 
 ```solidity
 // SPDX-License-Identifier: Unlicense
@@ -205,10 +205,10 @@ interface I12_String {
 }
 ```
 
-在命令行输入中输入`forge test`运行测试合约，可以看到测试通过！
+Enter `forge test` in the command line input to run the test contract, and you can see that the test passes!
 
 ![](./img/12-3.png)
 
-## 总结
+## Summary
 
-这一讲，我们介绍了如何在Huff中写入并读取`string`类型，并在`evm.codes`上成功运行了合约。
+In this lecture, we introduced how to write and read the `string` type in Huff, and successfully run the contract on `evm.codes`.
