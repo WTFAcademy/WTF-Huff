@@ -1,43 +1,43 @@
 ---
 title: 09. Error
 tags:
-  - huff
-  - interface
-  - error
-  - bytecode
+   -huff
+   -interface
+   - error
+   - bytecode
 ---
 
-# WTF Huff极简入门: 09. Error
+# WTF Huff Minimalist Introduction: 09. Error
 
-我最近在重新学Huff，巩固一下细节，也写一个“Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
+I'm re-learning Huff recently, consolidating the details, and writing a "Minimalist Introduction to Huff" for novices (programming experts can find another tutorial). I will update 1-3 lectures every week.
 
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)
+Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)
 
-社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy)
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
+All codes and tutorials are open source on github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
 
 -----
 
-Huff允许你在合约自定义错误`Error`，这一讲我们将介绍它。
+Huff allows you to customize the error `Error` in the contract, we will introduce it in this lecture.
 
 ## Error
 
-Solidity中有三种抛出异常的方法`error`，`require`和`assert`，他们都是基于`EVM`的`revert`指令。在Huff中，我们可以直接使用`revert`指令来抛出错误并返回错误信息。
+There are three methods of throwing exceptions in Solidity: `error`, `require` and `assert`. They are all based on the `revert` instruction of `EVM`. In Huff, we can directly use the `revert` instruction to throw errors and return error information.
 
-### 定义错误
+### Definition error
 
-你可以在合约接口中定义错误：
+You can define errors in the contract interface:
 
 ```c
-/* 接口 */
+/* interface */
 #define function getError() view returns (uint256)
 #define error CustomError(uint256)
 ```
 
-### 使用错误
+### Usage errors
 
-在方法中，你可以使用内置函数`__ERROR()`将错误选择器（error selector）推到堆栈上。
+Within a method, you can use the built-in function __ERROR() to push the error selector onto the stack.
 
 ```c
 #define macro GET_ERROR() = takes (0) returns (0) {
@@ -48,37 +48,37 @@ Solidity中有三种抛出异常的方法`error`，`require`和`assert`，他们
 }
 ```
 
-然后我们写一个Main宏作为合约的入口：
+Then we write a Main macro as the entry point of the contract:
 
 ```c
-// 合约的主入口，判断调用的是哪个函数
+//The main entrance of the contract determines which function is called
 #define macro MAIN() = takes (0) returns (0) {
-    // 通过selector判断要调用哪个函数
-    0x00 calldataload 0xE0 shr
-    dup1 __FUNC_SIG(GET_ERROR) eq get_error jumpi
-    // 如果没有匹配的函数，就revert
-    0x00 0x00 revert
+     // Determine which function to call through selector
+     0x00 calldataload 0xE0 shr
+     dup1 __FUNC_SIG(GET_ERROR) eq get_error jumpi
+     // If there is no matching function, revert
+     0x00 0x00 revert
 
-    get_error:
-        GET_ERROR()
+     get_error:
+         GET_ERROR()
 }
 ```
 
-## 分析合约字节码
+## Analyze contract bytecode
 
-我们可以使用`huffc`命令获取上面合约的runtime code:
+We can use the `huffc` command to obtain the runtime code of the above contract:
 
 ```shell
 huffc src/09_Error.huff -r
 ```
 
-打印出的bytecode为：
+The printed bytecode is:
 
 ```
 5f3560e01c8063ee23e35814610013575f5ffd5b60697f110b3655000000000000000000000000000000000000000000000000000000005f5260045260245ffd
 ```
 
-转换成格式化的表格（后半部分在`stack`中省略了一个用不上的`selector`）：
+Convert to a formatted table (the second half omits an unused `selector` in `stack`):
 
 | pc   | op         | opcode                   | stack                             |
 |------|------------|--------------------------|-----------------------------------|
@@ -105,8 +105,8 @@ huffc src/09_Error.huff -r
 | [34] | 5f         | PUSH0                    | 0x00 0x24                         |
 | [35] | fd         | REVERT                   |                                   |
 
-从`[16]`可以看到，目前内置函数`__ERROR`并没有被优化的很好，因为它会先计算出`4`字节的`error selector`（此处为`0x110b3655`），然后再将它转换为`32`字节的数据（右填充`0`，变为`110b365500000000000000000000000000000000000000000000000000000000`），最后使用`PUSH32`压入堆栈。但实际上，我们需要的只是前`4`字节，这样造成了gas浪费。
+As can be seen from `[16]`, the current built-in function `__ERROR` is not optimized very well, because it will first calculate the `4` byte `error selector` (here `0x110b3655`), and then Then convert it to the data of the `32` bytes (fill in the right, change to` 110B365500000000000000000000000000000000000000000000000000 `), and finally use the` push32` to press into the stack. But in fact, all we need is the first 4 bytes, which causes a waste of gas.
 
-## 总结
+## Summary
 
-这一讲，我们介绍了如何在Huff中自定义错误并使用它。Huff提供了内置函数`__ERROR`来获取错误选择器，但它没有被很好的优化。
+In this tutorial, we introduced how to customize errors and use them in Huff. Huff provides the built-in function `__ERROR` to get error selectors, but it is not well optimized.
