@@ -1,29 +1,28 @@
----
-title: 11. 循环
+title: 11. Loop
 tags:
-  - huff
-  - interface
-  - loop
-  - bytecode
+   -huff
+   -interface
+   - loop
+   - bytecode
 ---
 
-# WTF Huff极简入门: 11. 循环
+# WTF Huff Minimalist Introduction: 11. Loops
 
-我最近在重新学Huff，巩固一下细节，也写一个“Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
+I'm re-learning Huff recently, consolidating the details, and writing a "Minimalist Introduction to Huff" for novices (programming experts can find another tutorial). I will update 1-3 lectures every week.
 
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)
+Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)
 
-社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy)
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
+All codes and tutorials are open source on github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
 
 -----
 
-Huff并不原生支持循环，这一讲，我们介绍如何在Huff中使用一组跳转标签实现循环（Loop）。
+Huff does not natively support loops. In this lecture, we introduce how to use a set of jump labels to implement loops in Huff.
 
-## 循环
+## Loop
 
-Huff并不原生支持循环，但是我们可以通过一组跳转标签来实现循环。这一讲，我们将用Huff实现用Solidity写的`sumTo()`函数：
+Huff does not natively support looping, but we can implement looping through a set of jump tags. In this lecture, we will use Huff to implement the `sumTo()` function written in Solidity:
 
 ```solidity
 function sumTo(uint256 n) public pure returns(uint256){
@@ -35,81 +34,81 @@ function sumTo(uint256 n) public pure returns(uint256){
     }
 ```
 
-## 用Huff实现循环
+## Use Huff to implement looping
 
-实现逻辑很简单，我们先在循环的开始定义一个跳转标签`loop`，循环的结束定义另一个跳转标签`end`。我们在每次循环体的开头判断循环条件是否仍然成立，如果成立，就运行循环体，更新`i`，跳转到`loop`进行下一个循环；如果不成立，就跳转到`end`，结束循环。
+The implementation logic is very simple. We first define a jump label `loop` at the beginning of the loop, and another jump label `end` at the end of the loop. We judge whether the loop condition is still true at the beginning of each loop body. If it is true, we run the loop body, update `i`, and jump to `loop` for the next loop; if not, jump to `end`, End the cycle.
 
-下面，在Huff中使用循环实现`sumTo()`函数的代码：
+Below, the code for using a loop to implement the `sumTo()` function in Huff:
 
 ```c
-/* 接口 */
+/* interface */
 #define function sumTo(uint256) nonpayable returns (uint256)
 
-/* 方法 */
+/* method */
 #define macro SUM_TO() = takes (0) returns (0) {
     0x04 calldataload   // [n]
     0x00 mstore         // [] memory: [0x00: n]
     0x00 0x20 mstore    // [] memory: [0x00: n, 0x20: i]
     0x00 0x40 mstore    // [] memory: [0x00: n, 0x20: i, 0x40: sum]
 
-    // 循环
-    loop: 
-        // 加载 i 和 n，比较 i > n
-        0x20 mload 0x00 mload lt // [i>n]
-        // 如果大于，则结束循环
-        end jumpi       // []
+// loop
+     loop:
+         // Load i and n, compare i > n
+         0x20 mload 0x00 mload lt // [i>n]
+         //If greater than, end the loop
+         end jumpi // []
 
-        // 执行循环体，增加 sum 的值
-        0x40 mload      // [sum]
-        0x20 mload      // [i, sum]
-        add             // [sum+i]
-        0x40 mstore     // []
+         // Execute the loop body and increase the value of sum
+         0x40 mload // [sum]
+         0x20 mload // [i, sum]
+         add // [sum+i]
+         0x40 mstore // []
 
-        // 增加i
-        0x20 mload      // [i]
-        0x01 add        // [i+1]
-        0x20 mstore     // []
+         //increment i
+         0x20 mload // [i]
+         0x01 add // [i+1]
+         0x20 mstore // []
 
-        // 继续循环
-        loop jump
+         // continue looping
+         loop jump
 
-    // 循环结束，返回结果
-    end:
-        // 返回值
-        0x64 0x00 return
+     //End of loop, return result
+     end:
+         // return value
+         0x64 0x00 return
 }
 
 
 #define macro MAIN() = takes (0) returns (0) {
-    // 通过selector判断要调用哪个函数
-    0x00 calldataload 0xE0 shr
-    __FUNC_SIG(sumTo) eq sum jumpi
-    // 如果没有匹配的函数，就revert
-    0x00 0x00 revert
+     // Determine which function to call through selector
+     0x00 calldataload 0xE0 shr
+     __FUNC_SIG(sumTo) eq sum jumpi
+     // If there is no matching function, revert
+     0x00 0x00 revert
 
-    sum:
-        SUM_TO()
+     sum:
+         SUM_TO()
 }
 ```
 
-## 分析合约字节码
+## Analyze contract bytecode
 
-我们可以使用`huffc`命令获取上面合约的runtime code:
+We can use the `huffc` command to obtain the runtime code of the above contract:
 
 ```shell
 huffc src/11_Loop.huff -r
 ```
 
-打印出的bytecode为：
+The printed bytecode is:
 
 ```
 5f3560e01c63ef0baad914610012575f5ffd5b6004355f525f6020525f6040525b6020515f51106100425760405160205101604052602051600101602052610020565b60206040f3
 ```
 
-将这段字节码复制到[evm.codes playground](https://www.evm.codes/playground?fork=shanghai)，将`Calldata`设为`0xef0baad90000000000000000000000000000000000000000000000000000000000000005`（调用`sumTo`函数，参数`n`设为`5`）并点击运行。右下角的返回值为`0x00...0f`，也就是`15`（`=1+2+3+4+5`），合约运行成功！
+Copy this bytecode to [evm.codes playground](https://www.evm.codes/playground?fork=shanghai), set `Calldata` to `0xef0baad90000000000000000000000000000000000000000000000000000000000000000005` (call `sumTo `function,parameter` n` is set to `5`) and click Run. The return value in the lower right corner is `0x00...0f`, which is `15` (`=1+2+3+4+5`). The contract runs successfully!
 
 ![](./img/11-1.png)
 
-## 总结
+## Summary
 
-这一讲，我们介绍了如何在Huff中使用循环，并在`evm.codes`上成功运行了合约。
+In this lecture, we introduced how to use loops in Huff and successfully ran the contract on `evm.codes`.
