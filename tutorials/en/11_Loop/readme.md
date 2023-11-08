@@ -1,9 +1,10 @@
+---
 title: 11. Loop
 tags:
-   -huff
-   -interface
-   - loop
-   - bytecode
+  - huff
+  - interface
+  - loop
+  - bytecode
 ---
 
 # WTF Huff Minimalist Introduction: 11. Loops
