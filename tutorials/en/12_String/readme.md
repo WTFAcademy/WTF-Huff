@@ -44,7 +44,7 @@ contract String {
 }
 ```
 
-## string type advanced
+## String type advanced
 
 To implement the `string` type in Huff, we must first learn how it is laid out in the EVM's storage, `calldata`, and `returndata`.
 
