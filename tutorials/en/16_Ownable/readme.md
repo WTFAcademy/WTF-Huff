@@ -53,7 +53,7 @@ contract Ownable {
 }
 ```
 
-## accomplish
+## Implementation
 
 Our implementation contract is simplified from `Owned.huff` in [huffmate](https://github.com/huff-language/huffmate). Its logic is simple:
 
