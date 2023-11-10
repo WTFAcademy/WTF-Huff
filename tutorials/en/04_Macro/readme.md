@@ -1,28 +1,28 @@
 ---
-title: 04. 宏
+title: 04. Macro
 tags:
-  - huff
-  - macro
-  - bytecode
+   -huff
+   - macro
+   - bytecode
 ---
 
-# WTF Huff极简入门: 04. 宏
+# WTF Huff Minimalist Introduction: 04. Macros
 
-我最近在重新学Huff，巩固一下细节，也写一个“Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
+I'm re-learning Huff recently, consolidating the details, and writing a "Simplified Introduction to Huff" for novices (programmers can find another tutorial). I will update 1-3 lectures every week.
 
-推特：[@0xAA_Science](https://twitter.com/0xAA_Science)
+Twitter: [@0xAA_Science](https://twitter.com/0xAA_Science)
 
-社区：[Discord](https://discord.gg/5akcruXrsk)｜[微信群](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link)｜[官网 wtf.academy](https://wtf.academy)
+Community: [Discord](https://discord.gg/5akcruXrsk)｜[WeChat Group](https://docs.google.com/forms/d/e/1FAIpQLSe4KGT8Sh6sJ7hedQRuIYirOoZK_85miz3dw7vA1-YjodgJ-A/viewform?usp=sf_link) |[Official website wtf.academy](https://wtf.academy)
 
-所有代码和教程开源在github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
+All codes and tutorials are open source on github: [github.com/AmazingAng/WTF-Huff](https://github.com/AmazingAng/WTF-Huff)
 
 -----
 
-这一讲，我们将介绍Huff中的宏和`macro`关键字。
+In this lecture, we will introduce the macros and `macro` keyword in Huff.
 
-## 宏
+## Macro
 
-Huff中有两种可以将字节码组合起来的方法，一种叫宏`Macros`，另一种叫函数`Functions`。两者之间有一些差异，但是大多数时候开发者应该使用宏，而不是函数。定义宏时需要使用`macro`关键字，规则如下：
+There are two ways to combine bytecodes in Huff, one is called macros `Macros` and the other is called functions `Functions`. There are some differences between the two, but most of the time developers should use macros rather than functions. You need to use the `macro` keyword when defining a macro. The rules are as follows:
 
 ```c
 #define macro MACRO_NAME(arguments) = takes (1) returns (3) {
@@ -30,21 +30,20 @@ Huff中有两种可以将字节码组合起来的方法，一种叫宏`Macros`�
 }
 ```
 
-其中:
+in:
 
-- `MACRO_NAME`: 宏的名称。
-- `arguments`: 宏的参数，可以没有。
-- `takes (1)`: 指定宏/函数接受的堆栈输入数量，可以没有，默认为`0`。
-- `returns (3)`: 指定宏/函数输出的堆栈元素数量，可以没有，默认为`0`。
+- `MACRO_NAME`: The name of the macro.
+- `arguments`: Macro parameters, optional.
+- `takes (1)`: Specifies the number of stack inputs accepted by the macro/function, optional, default is `0`.
+- `returns (3)`: Specifies the number of stack elements output by the macro/function, optional, default is `0`.
 
-> 比较奇怪的是，当前的huff编译器并不会检查`takes`和`returns`的数量，所以当前它们只是个摆设。未来版本可能会加上检查？
+> What is strange is that the current huff compiler does not check the number of `takes` and `returns`, so they are just a decoration at present. Maybe checks will be added in future versions?
 
-在下面的例子中，`SAVE()`宏接受一个参数`value`，然后将它的值存储在存储槽`STORAGE_SLOT0`。在宏中，我们使用`<value>`来使用参数的值。
-
+In the following example, the `SAVE()` macro accepts a parameter `value` and stores its value in storage slot `STORAGE_SLOT0`. In macros, we use `<value>` to use the value of the parameter.
 ```c
 #define constant STORAGE_SLOT0 = FREE_STORAGE_POINTER()
 
-// 这个宏接受一个参数 value，然后将它的值存储在 STORAGE_SLOT0
+// This macro accepts a parameter value and stores its value in STORAGE_SLOT0
 #define macro SAVE(value) = takes(0) returns(0) {
     <value>                 // [value]
     [STORAGE_SLOT0]         // [value_slot0_pointer, value]
@@ -56,30 +55,30 @@ Huff中有两种可以将字节码组合起来的方法，一种叫宏`Macros`�
 }
 ```
 
-## 分析合约字节码
+## Analyze contract bytecode
 
-我们可以使用`huffc`命令获取上面合约的runtime code:
+We can use the `huffc` command to obtain the runtime code of the above contract:
 
 ```shell
 huffc src/04_Macro.huff -r
 ```
 
-打印出的bytecode为：
+The printed bytecode is:
 
 ```
 6104205f55
 ```
 
-转换成格式化的表格：
+Convert to formatted table:
 
-| pc   | op     | opcode         | stack              |
-|------|--------|----------------|--------------------|
-| [00] | 61 0420 | PUSH2 0x0420   | 0x0420            |
-| [03] | 5f     | PUSH0          | 0 0x0420           | 
-| [04] | 55     | SSTORE         |                    |
+| pc | op | opcode | stack |
+|------|--------|----------------|---------------- ----|
+| [00] | 61 0420 | PUSH2 0x0420 | 0x0420 |
+| [03] | 5f | PUSH0 | 0 0x0420 |
+| [04] | 55 | SSTORE | |
 
-我们可以看到，这个合约做的就是使用`SSTORE`指令将`0x0420`存储在存储槽`0`中。
+We can see that what this contract does is store `0x0420` in storage slot `0` using the `SSTORE` instruction.
 
-## 总结
+## Summary
 
-这一讲，我们介绍了Huff中的宏和`macro`关键字。Huff中的宏和函数很相似，但是开发者大多数时间应该使用宏，而不是函数。
+In this lecture, we introduced the macros and `macro` keyword in Huff. Macros and functions in Huff are very similar, but developers should use macros rather than functions most of the time.
