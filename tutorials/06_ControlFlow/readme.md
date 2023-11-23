@@ -32,7 +32,7 @@ EVM底层主要是使用跳转指令`JUMP`，`JUMPI`，和`JUMPDEST`进行代码
 #define macro MAIN() = takes (0) returns (0) {
     // 从 calldata 读取值
     0x00 calldataload        // [calldata @ 0x00]
-    0 eq
+    0x00 eq
     jump_one jumpi
 
     // 如果到达此点，则revert
