@@ -93,6 +93,17 @@ forge test
 
 有关如何使用Foundry的更多信息，请查看[Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge)和[foundry-huff library repository](https://github.com/huff-language/foundry-huff)。
 
+## WTF Huff贡献者
+<div align="center">
+  <h4 align="center">
+    贡献者是WTF学院的基石
+  </h4>
+  <a href="https://github.com/WTFAcademy/WTF-Huff/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=WTFAcademy/WTF-Huff" />
+  </a>
+</div>
+
+
 ## 参考
 
 - [huff-project-template](https://github.com/huff-language/huff-project-template)

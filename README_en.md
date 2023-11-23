@@ -92,6 +92,16 @@ forge test
 
 For more information on how to use Foundry, check out the [Foundry Github Repository](https://github.com/foundry-rs/foundry/tree/master/forge) and the [foundry-huff library repository](https://github.com/huff-language/foundry-huff).
 
+## WTF Huff Contributors
+<div align="center">
+  <h4 align="center">
+    Contributors are the basis of WTF Academy!
+  </h4>
+  <a href="https://github.com/WTFAcademy/WTF-Huff/graphs/contributors">
+    <img src="https://contrib.rocks/image?repo=WTFAcademy/WTF-Huff" />
+  </a>
+</div>
+
 ## Reference
 
 - [huff-project-template](https://github.com/huff-language/huff-project-template)
