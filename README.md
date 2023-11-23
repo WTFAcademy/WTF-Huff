@@ -1,5 +1,7 @@
 # WTF Huff
 
+:globe_with_meridians:	**[English Version](https://github.com/WTFAcademy/WTF-Huff/blob/main/README_en.md)** :globe_with_meridians:	
+
 我最近在重新学Huff，巩固一下细节，也写一个“WTF Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
 
 > Huff 是一种低级编程语言，旨在开发在以太坊虚拟机（EVM）上运行的高度优化的智能合约。Huff 并没有隐藏 EVM 的内部工作原理，而是将其编程堆栈暴露给开发人员进行手动操作。
@@ -63,7 +65,7 @@
 
 ### 快速开始
 
-1. 克隆[https://github.com/WTFAcademy/WTF-Huff]或[Huff模版仓库](https://github.com/huff-language/huff-project-template)。
+1. 克隆[WTF-Huff](https://github.com/WTFAcademy/WTF-Huff)或[Huff模版仓库](https://github.com/huff-language/huff-project-template)。
 
 运行：
 
