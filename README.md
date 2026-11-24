@@ -1,5 +1,7 @@
 # WTF Huff
 
+可运行的 Foundry 示例使用 Solidity 0.8.39、Foundry v1.10.0 和 forge-std v1.17.0。克隆后运行 `git submodule update --init --recursive`，再运行 `forge test`。
+
 :globe_with_meridians:	**[English Version](https://github.com/WTFAcademy/WTF-Huff/blob/main/README_en.md)** :globe_with_meridians:	
 
 我最近在重新学Huff，巩固一下细节，也写一个“WTF Huff极简入门”，供小白们使用（编程大佬可以另找教程），每周更新1-3讲。
