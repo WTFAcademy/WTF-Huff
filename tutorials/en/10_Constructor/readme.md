@@ -84,7 +84,7 @@ The printed bytecode is:
 
 Copy this bytecode to [evm.codes playground](https://www.evm.codes/playground?fork=shanghai) and click Run. You can see that the storage slot `0` is initialized to `69`, and the runtime code of the contract is returned: `5f3560e01c80632096525514610013575f5ffd5b5f545f5260205ff3`, indicating that the contract is initialized successfully!
 
-![](./img/10-1.png)
+![](../../10_Constructor/img/10-1.png)
 
 ## Summary
 
