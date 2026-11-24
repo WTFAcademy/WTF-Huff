@@ -51,7 +51,7 @@ We divide the contract into two parts. The first part defines the interface and 
 
 ```c
 /* interface */
-#define function setValue(uint256) nonpayable returns ()
+#define setValue(uint256)
 #define function getValue() view returns (uint256)
 
 /* Storage slot */
@@ -99,7 +99,7 @@ The second part is the Main macro, the main entry of the contract, which determi
 
 1. In the first line, we use `0x00 calldataload 0xE0 shr` to read the first `4` bytes in `calldata`, which is the function selector. We will use this code often, so you can think about how it works.
 
-2. After obtaining `selector`, we need to jump by comparing `setValue()` and `getValue()`. If there is no matching function, `revert`. Since we defined these two functions in the interface, we can use the built-in function `__FUNC_SIG()` to get their `selector` and push it onto the stack, and then use `eq` for comparison. Otherwise, you have to use `__FUNC_SIG("function setValue(uint256) nonpayable returns ()")`, which is very cumbersome.
+2. After obtaining `selector`, we need to jump by comparing `setValue()` and `getValue()`. If there is no matching function, `revert`. Since we defined these two functions in the interface, we can use the built-in function `__FUNC_SIG()` to get their `selector` and push it onto the stack, and then use `eq` for comparison. Otherwise, you have to use `__FUNC_SIG("setValue(uint256)")`, which is very cumbersome.
 
 3. After the two jump tags `set` and `get`, we run the `SET_VALUE()` and `GET_VALUE()` methods respectively to execute the corresponding logic.
 

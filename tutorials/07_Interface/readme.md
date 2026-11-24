@@ -51,7 +51,7 @@ Huff接口的例子：
 
 ```c
 /* 接口 */
-#define function setValue(uint256) nonpayable returns ()
+#define setValue(uint256)
 #define function getValue() view returns (uint256)
 
 /* 存储槽位 */
@@ -99,7 +99,7 @@ Huff接口的例子：
 
 1. 第一行，我们使用`0x00 calldataload 0xE0 shr`读取`calldata`中前`4`字节，也就是函数选择器。这段代码我们会经常使用，你可以想一想它是怎么工作的。
 
-2. 获取`selector`后，我们要通过比对`setValue()`和`getValue()`进行跳转，如果没有匹配的函数，则`revert`。由于我们在接口中定义了这两个函数，我们可以使用内置函数`__FUNC_SIG()`获取他们的`selector`并推入堆栈，然后使用`eq`进行比对。不然的话，就要使用`__FUNC_SIG("function setValue(uint256) nonpayable returns ()")`，很繁琐。
+2. 获取`selector`后，我们要通过比对`setValue()`和`getValue()`进行跳转，如果没有匹配的函数，则`revert`。由于我们在接口中定义了这两个函数，我们可以使用内置函数`__FUNC_SIG()`获取他们的`selector`并推入堆栈，然后使用`eq`进行比对。不然的话，就要使用`__FUNC_SIG("setValue(uint256)")`，很繁琐。
 
 3. 在`set`和`get`两个跳转标签之后，我们分别运行`SET_VALUE()`和`GET_VALUE()`方法，执行相应的逻辑。
 
